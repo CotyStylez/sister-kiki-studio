@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#fff5f8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Sister Kiki">
+  <title>Sister Kiki Creator Studio 🎀 — Simple & Powerful TikTok Suite</title>
+  <meta name="description" content="Kiki's all-in-one TikTok creator suite: Video Maker, Insider Photo Editor, Voice Studio with dead-air silence trimmer, Script Teleprompter, and Cover Designer.">
+  <meta property="og:title" content="Sister Kiki Creator Studio 🎀 — Simple & Powerful TikTok Suite">
+  <meta property="og:description" content="Kiki's all-in-one TikTok creator suite: Video Maker, Insider Photo Editor, Voice Studio with dead-air silence trimmer, Script Teleprompter, and Cover Designer.">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500;1,700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kiki: {
+              milk: '#fff5f8',
+              surface: '#ffffff',
+              card: '#ffffff',
+              blush: '#fce7f3',
+              pink: '#fbcfe8',
+              candy: '#f472b6',
+              rose: '#fb7185',
+              deep: '#db2777',
+              pearl: '#fefbf6',
+              border: '#fbcfe8',
+              text: '#4a1525',
+              textMuted: '#835565',
+              gold: '#fbbf24'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            cormorant: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Safe area and smooth scrolling */
+    html, body {
+      background-color: #fff5f8;
+      color: #4a1525;
+      font-family: 'Outfit', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: calc(env(safe-area-inset-bottom) + 76px);
+      overscroll-behavior-y: none;
+    }
+
+    /* Strawberry milk background aura */
+    .strawberry-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(251, 207, 232, 0.6) 0%, rgba(255, 245, 248, 0.4) 45%, #fff5f8 100%);
+    }
+
+    input[type=range] {
+      accent-color: #f472b6;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fbcfe8;
+      border-radius: 9999px;
+    }
+
+    .safe-zone-guide {
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen strawberry-glow flex flex-col justify-between selection:bg-pink-200 selection:text-pink-900">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-pink-200/80 px-4 py-2.5 flex items-center justify-between shadow-xs">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-400 to-rose-300 p-0.5 shadow-sm shadow-pink-200 flex items-center justify-center">
+        <div class="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-pink-500 text-base">
+          🎀
+        </div>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold font-serif tracking-wide text-pink-950 flex items-center gap-1">
+          Sister Kiki <span class="text-[11px] font-sans font-medium text-pink-500 tracking-normal">Creator Studio ✨</span>
+        </h1>
+        <p class="text-[10px] text-pink-700 font-sans -mt-0.5" id="active-tool-subtitle">Tool: 🎬 Video Maker</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button onclick="resetCurrentTool()" title="Reset Tool" class="h-8 px-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-semibold text-pink-700 flex items-center gap-1 shadow-xs transition active:scale-95">
+        <i class="ph-bold ph-arrow-counter-clockwise text-xs"></i>
+        <span>Reset</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- NOTIFICATION TOAST -->
+  <div id="toast" class="fixed top-14 inset-x-4 z-50 mx-auto max-w-sm hidden bg-white/95 border border-pink-300 text-pink-950 px-4 py-2.5 rounded-2xl shadow-xl shadow-pink-200/60 backdrop-blur-md flex items-center gap-2.5 transition-all duration-300">
+    <div id="toast-icon" class="text-base">🎀</div>
+    <div class="text-xs font-medium text-pink-900" id="toast-message">Kiki's Studio is ready ✨</div>
+  </div>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="max-w-5xl mx-auto w-full px-4 py-4 flex-1">
+
+    <!-- ================================================================= -->
+    <!-- TOOL 1: 🎬 VIDEO MAKER (Simple 9:16 Video Montage) -->
+    <!-- ================================================================= -->
+    <div id="tool-video" class="tool-view space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 01 · Video Montage</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">Make a 9:16 TikTok Video</h2>
+            <p class="text-xs text-pink-800">Add photos, pick a cute look, and export a ready-to-post vertical video with music.</p>
+          </div>
+
+          <!-- Photo Drop Zone -->
+          <label class="block relative group cursor-pointer border-2 border-dashed border-pink-300 hover:border-pink-500 rounded-3xl p-5 bg-white/80 hover:bg-pink-50/60 transition text-center shadow-sm backdrop-blur-xs">
+            <input type="file" id="photo-input" accept="image/*" multiple class="hidden">
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-200 to-rose-200 border border-pink-300 flex items-center justify-center text-pink-600 text-xl shadow-xs">
+                <i class="ph-fill ph-camera-plus"></i>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-pink-950 block">Tap to Pick 2–6 Photos 📸</span>
+                <span class="text-[10px] text-pink-600">Wide or square photos auto-fit cleanly to 9:16!</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Thumbnails Strip -->
+          <div id="thumb-preview-wrap" class="hidden space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-pink-800 font-medium">
+              <span id="photo-count-label">0 photos loaded</span>
+              <span class="text-[10px] text-pink-500">Tap ✕ to remove</span>
+            </div>
+            <div id="thumbnail-strip" class="flex gap-2 overflow-x-auto pb-1.5 pt-0.5"></div>
+          </div>
+
+          <!-- Sample Fits Loader -->
+          <div class="text-center">
+            <button onclick="loadSampleFashionLooks()" class="text-xs text-pink-600 hover:text-pink-800 underline decoration-pink-300 font-semibold transition">
+              ✨ Or tap here to load 4 aesthetic sample looks for Kiki
+            </button>
+          </div>
+
+          <!-- 4 Simple Layout Choices -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-pink-950">Photo Layout:</span>
+              <span id="active-layout-name" class="font-serif italic text-pink-600 font-medium">Dreamy Bokeh Wings</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="selectLayout('bokeh')" class="layout-btn active p-2.5 rounded-2xl border text-left bg-pink-100/90 border-pink-400 shadow-xs transition" data-layout="bokeh">
+                <div class="text-xs font-bold text-pink-950 font-serif">Dreamy Bokeh 🌸</div>
+                <div class="text-[10px] text-pink-700">Soft blurred wings</div>
+              </button>
+              <button onclick="selectLayout('polaroid')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="polaroid">
+                <div class="text-xs font-bold text-pink-950 font-serif">Polaroid Chic 📸</div>
+                <div class="text-[10px] text-pink-700">Cute frame & tape</div>
+              </button>
+              <button onclick="selectLayout('split')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="split">
+                <div class="text-xs font-bold text-pink-950 font-serif">Editorial Split 🎀</div>
+                <div class="text-[10px] text-pink-700">Two-photo magazine</div>
+              </button>
+              <button onclick="selectLayout('drift')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="drift">
+                <div class="text-xs font-bold text-pink-950 font-serif">Kinetic Drift ✨</div>
+                <div class="text-[10px] text-pink-700">Slow smooth zoom</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Visual Vibe Filter -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-pink-950">Aesthetic Vibe:</span>
+              <span id="active-vibe-name" class="font-serif italic text-pink-600 font-semibold">Strawberry Milk 🍓</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              <button onclick="selectVibe('cherrypop')" class="vibe-btn active p-2 rounded-xl border text-left bg-pink-100/90 border-pink-400 text-xs font-bold text-pink-950 transition" data-vibe="cherrypop">
+                🍓 Strawberry
+              </button>
+              <button onclick="selectVibe('cleangirl')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="cleangirl">
+                ✨ Clean Girl
+              </button>
+              <button onclick="selectVibe('parisian')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="parisian">
+                🌹 Parisian
+              </button>
+              <button onclick="selectVibe('golden')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="golden">
+                ☀️ Golden Hour
+              </button>
+              <button onclick="selectVibe('film90s')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="film90s">
+                🎞️ 90s Film
+              </button>
+              <button onclick="selectVibe('runway')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="runway">
+                📸 Runway
+              </button>
+              <button onclick="selectVibe('sunset')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="sunset">
+                🍑 Sunset
+              </button>
+              <button onclick="selectVibe('moody')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="moody">
+                🍃 Moody
+              </button>
+            </div>
+          </div>
+
+          <!-- Video Hook Caption -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-1.5 shadow-xs">
+            <div class="flex items-center justify-between text-xs">
+              <label class="font-bold text-pink-950">Opening Hook Caption:</label>
+              <button onclick="shuffleHookPrompt()" class="text-pink-600 hover:text-pink-800 flex items-center gap-1 font-semibold">
+                <i class="ph-bold ph-shuffle"></i>Shuffle Idea 🎀
+              </button>
+            </div>
+            <input type="text" id="hook-text-input" value="fit check with my favorite pieces ✨" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2 text-xs text-pink-950 placeholder-pink-400 focus:outline-none focus:border-pink-500 font-medium">
+          </div>
+
+          <!-- Render Progress -->
+          <div id="render-progress-card" class="hidden bg-white/95 border border-pink-300 rounded-3xl p-4 space-y-2 shadow-md">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-pink-700 font-bold flex items-center gap-1">
+                <span class="animate-spin">🎀</span>
+                <span id="render-status-text">Assembling 9:16 Video...</span>
+              </span>
+              <span id="render-pct" class="text-pink-900 font-bold">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-pink-100 rounded-full overflow-hidden">
+              <div id="render-bar" class="h-full bg-gradient-to-r from-pink-400 via-rose-300 to-pink-500 w-0 transition-all duration-100 rounded-full"></div>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="space-y-2 pt-1">
+            <button id="btn-start-render" onclick="renderFinalVideo()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
+              <span>🎀</span>
+              <span>Make My TikTok Video ✨</span>
+            </button>
+            <a id="btn-download-video" class="hidden w-full py-4 rounded-3xl bg-white hover:bg-pink-50 border-2 border-pink-400 text-pink-800 font-serif font-bold text-base transition flex items-center justify-center gap-2 shadow-md">
+              <i class="ph-bold ph-download-simple text-lg text-pink-600"></i>
+              <span>Save Video to Phone (Camera Roll) 🎀</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Live 9:16 Preview Canvas -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
+          <div class="flex items-center justify-between w-full max-w-[270px] px-1 text-xs">
+            <span class="font-bold text-pink-950 font-serif">Live 9:16 Preview</span>
+            <button onclick="toggleSafeZone()" id="btn-toggle-safe-zone" class="px-2.5 py-0.5 rounded-full bg-white border border-pink-300 text-[10px] text-pink-700 hover:text-pink-900 shadow-xs transition">
+              <span id="safe-zone-btn-text">Safe Zone: Off</span>
+            </button>
+          </div>
+
+          <div class="relative w-[270px] h-[480px] rounded-[32px] overflow-hidden border-4 border-pink-200 shadow-xl shadow-pink-200/50 bg-pink-950 flex items-center justify-center">
+            <canvas id="preview-canvas" width="540" height="960" class="w-full h-full object-cover block"></canvas>
+            <video id="final-video-player" class="w-full h-full object-cover hidden" playsinline controls loop></video>
+
+            <div id="canvas-empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-5 bg-pink-50/95">
+              <div class="w-14 h-14 rounded-3xl bg-pink-100 border border-pink-300 text-pink-500 flex items-center justify-center text-2xl mb-2 shadow-xs">
+                🎀
+              </div>
+              <p class="text-xs font-bold text-pink-950">Add photos to preview</p>
+              <p class="text-[10px] text-pink-600 mt-0.5">Pick photos or load sample looks above!</p>
+            </div>
+
+            <!-- TikTok Safe Zone Overlays -->
+            <div id="preview-safe-zone" class="safe-zone-guide absolute inset-0 hidden z-20">
+              <div class="absolute right-2.5 bottom-16 flex flex-col items-center gap-2.5 opacity-80">
+                <div class="w-7 h-7 rounded-full bg-black/40 border border-white/50 flex items-center justify-center text-[10px]">❤️</div>
+                <div class="w-7 h-7 rounded-full bg-black/40 border border-white/50 flex items-center justify-center text-[10px]">💬</div>
+                <div class="w-7 h-7 rounded-full bg-black/40 border border-white/50 flex items-center justify-center text-[10px]">🔖</div>
+                <div class="w-7 h-7 rounded-full bg-black/40 border border-white/50 flex items-center justify-center text-[10px]">↗️</div>
+              </div>
+              <div class="absolute bottom-2.5 left-2 right-12 h-12 bg-black/35 rounded-xl border border-white/30 flex flex-col justify-center px-2">
+                <span class="text-[8px] font-semibold text-white">@sisterkiki · 1h ago</span>
+                <span class="text-[7px] font-sans text-white/80">TikTok Captions & Sound Bar Area</span>
+              </div>
+              <div class="absolute top-2.5 inset-x-0 text-center">
+                <span class="text-[8px] font-mono text-white bg-black/50 px-2 py-0.5 rounded-full border border-white/30">TikTok Safe Zone Active 🎀</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-[10px] text-pink-400 font-medium text-center">Vertical 9:16 Canvas · 720x1280</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TOOL 2: 📸 PHOTOS (Insider Photo Retouch & Darkroom) -->
+    <!-- ================================================================= -->
+    <div id="tool-photos" class="tool-view hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 02 · Insider Photo Studio</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">Celebrity Editorial Retouch</h2>
+            <p class="text-xs text-pink-800">The secrets top creative directors and celebrity retouchers use—distilled into 1-tap tools.</p>
+          </div>
+
+          <!-- Photo Picker Drop Zone -->
+          <div class="flex items-center gap-2">
+            <label class="flex-1 cursor-pointer border-2 border-dashed border-pink-300 hover:border-pink-500 rounded-2xl p-3 bg-white/80 hover:bg-pink-50 text-center shadow-xs transition">
+              <input type="file" id="editor-photo-input" accept="image/*" class="hidden">
+              <span class="text-xs font-bold text-pink-900 flex items-center justify-center gap-1.5">
+                <i class="ph-bold ph-image text-pink-500"></i>
+                <span>Choose Photo to Edit 📸</span>
+              </span>
+            </label>
+            <button onclick="loadEditorSamplePhoto()" class="px-3 py-3 rounded-2xl bg-pink-100 hover:bg-pink-200 border border-pink-300 text-xs font-bold text-pink-800 transition active:scale-95 whitespace-nowrap">
+              Load Sample ✨
+            </button>
+          </div>
+
+          <!-- Aspect Ratio Cropping Buttons -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-pink-950">Framing Ratio:</span>
+              <span id="active-crop-name" class="font-serif italic text-pink-600 font-medium">9:16 Vertical (TikTok)</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <button onclick="setEditorRatio('9:16')" class="crop-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-bold text-pink-900 transition" data-ratio="9:16">
+                9:16 (TikTok)
+              </button>
+              <button onclick="setEditorRatio('4:5')" class="crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition" data-ratio="4:5">
+                4:5 (Portrait)
+              </button>
+              <button onclick="setEditorRatio('1:1')" class="crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition" data-ratio="1:1">
+                1:1 (Square)
+              </button>
+            </div>
+          </div>
+
+          <!-- Insider Color Emulsion Presets -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-pink-950">Insider Emulsion LUT:</span>
+              <span id="active-emulsion-name" class="font-serif italic text-pink-600 font-semibold">Portra Warmth 🌸</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
+              <button onclick="setEmulsion('portra')" class="emulsion-btn active p-2.5 rounded-2xl border text-left bg-pink-100 border-pink-400 font-bold text-pink-900 transition" data-emulsion="portra">
+                🌸 Portra Warmth
+                <span class="block text-[10px] text-pink-700 font-normal">Creamy skin glow</span>
+              </button>
+              <button onclick="setEmulsion('flash')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="flash">
+                📸 Studio Flash
+                <span class="block text-[10px] text-pink-700 font-normal">Runway pop contrast</span>
+              </button>
+              <button onclick="setEmulsion('parisian')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="parisian">
+                🌹 Parisian Chic
+                <span class="block text-[10px] text-pink-700 font-normal">Muted quiet luxury</span>
+              </button>
+              <button onclick="setEmulsion('copenhagen')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="copenhagen">
+                ✨ Copenhagen
+                <span class="block text-[10px] text-pink-700 font-normal">Glass skin clarity</span>
+              </button>
+              <button onclick="setEmulsion('film90')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="film90">
+                🎞️ 90s Amber Film
+                <span class="block text-[10px] text-pink-700 font-normal">Analog nostalgia</span>
+              </button>
+              <button onclick="setEmulsion('noir')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="noir">
+                🖤 Noir Velvet
+                <span class="block text-[10px] text-pink-700 font-normal">High fashion B&W</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Insider Lighting & Texture Levers (Sliders) -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-3.5 shadow-xs">
+            <span class="text-xs font-bold text-pink-950 block">Insider Lighting & Texture Levers:</span>
+
+            <!-- Pro-Mist Glow Slider -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-medium text-pink-900">✨ Pro-Mist Diffusion Glow</span>
+                <span id="val-glow" class="font-mono text-pink-600 font-bold">40%</span>
+              </div>
+              <input type="range" id="slider-glow" min="0" max="100" value="40" class="w-full">
+            </div>
+
+            <!-- Golden Warmth Slider -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-medium text-pink-900">☀️ Golden Hour Warmth</span>
+                <span id="val-warmth" class="font-mono text-pink-600 font-bold">+15%</span>
+              </div>
+              <input type="range" id="slider-warmth" min="-50" max="50" value="15" class="w-full">
+            </div>
+
+            <!-- Film Grain Slider -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-medium text-pink-900">🎞️ 35mm Organic Film Grain</span>
+                <span id="val-grain" class="font-mono text-pink-600 font-bold">25%</span>
+              </div>
+              <input type="range" id="slider-grain" min="0" max="100" value="25" class="w-full">
+            </div>
+
+            <!-- Studio Contrast Slider -->
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-medium text-pink-900">📸 Studio Punch Contrast</span>
+                <span id="val-contrast" class="font-mono text-pink-600 font-bold">+10%</span>
+              </div>
+              <input type="range" id="slider-contrast" min="-30" max="50" value="10" class="w-full">
+            </div>
+          </div>
+
+          <!-- Actions: Save & Send to Other Tools -->
+          <div class="space-y-2 pt-1">
+            <button onclick="downloadEditedPhoto()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
+              <i class="ph-bold ph-download-simple text-lg"></i>
+              <span>Save Photo to Camera Roll 🎀</span>
+            </button>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <button onclick="sendPhotoToVideo()" class="py-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-pink-800 font-bold shadow-xs transition active:scale-95 flex items-center justify-center gap-1">
+                <span>Send to Video Maker 🎬</span>
+              </button>
+              <button onclick="sendPhotoToCover()" class="py-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-pink-800 font-bold shadow-xs transition active:scale-95 flex items-center justify-center gap-1">
+                <span>Use as Cover Art 🎨</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Photo Canvas Column -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
+          <div class="flex items-center justify-between w-full max-w-[280px] px-1 text-xs">
+            <span class="font-bold text-pink-950 font-serif">Retouch Canvas</span>
+            <!-- Hold to Compare Button -->
+            <button id="btn-compare-photo" class="px-2.5 py-1 rounded-full bg-white border border-pink-300 text-[11px] font-bold text-pink-700 hover:bg-pink-50 transition shadow-xs select-none">
+              Hold to Compare
+            </button>
+          </div>
+
+          <!-- Canvas Frame -->
+          <div class="relative w-[280px] h-[498px] rounded-[32px] overflow-hidden border-4 border-pink-200 shadow-xl shadow-pink-200/50 bg-white flex items-center justify-center">
+            <canvas id="photo-editor-canvas" width="720" height="1280" class="w-full h-full object-cover block"></canvas>
+            <div id="editor-empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-center p-5 bg-pink-50/95 cursor-pointer">
+              <div onclick="document.getElementById('editor-photo-input').click()" class="w-16 h-16 rounded-3xl bg-pink-100 hover:bg-pink-200 border border-pink-300 text-pink-500 flex items-center justify-center text-3xl mb-3 shadow-xs transition active:scale-95">
+                📸
+              </div>
+              <p class="text-sm font-bold text-pink-950 font-serif">Retouch Studio Ready</p>
+              <p class="text-[11px] text-pink-600 mt-1 max-w-[200px]">Tap to choose a photo or test with our sample editorial look</p>
+              <button onclick="event.stopPropagation(); loadEditorSamplePhoto();" class="mt-3.5 px-4 py-2 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-xs font-semibold shadow-sm transition active:scale-95">
+                Load Sample Look ✨
+              </button>
+            </div>
+          </div>
+          <p class="text-[10px] text-pink-400 font-medium text-center">High-Definition Editorial Canvas · 720x1280</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TOOL 3: 🎙️ VOICE STUDIO (Sound Booth & Silence Trimmer) -->
+    <!-- ================================================================= -->
+    <div id="tool-voice" class="tool-view hidden space-y-4 max-w-2xl mx-auto">
+      <div class="space-y-1 text-center">
+        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 03 · Voice Studio</span>
+        <h2 class="text-2xl font-bold font-serif text-pink-950">Record Confident Voiceovers</h2>
+        <p class="text-xs text-pink-800">Our smart silence trimmer snips out awkward pauses and deep breaths automatically!</p>
+      </div>
+
+      <!-- Record Card -->
+      <div class="bg-white/90 border border-pink-200 rounded-3xl p-6 text-center space-y-4 shadow-sm">
+        <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+          <button id="btn-voice-studio-record" class="w-20 h-20 rounded-full bg-gradient-to-tr from-pink-500 to-rose-400 text-white text-3xl flex items-center justify-center shadow-lg shadow-pink-300/60 active:scale-95 transition">
+            <i id="voice-studio-mic-icon" class="ph-fill ph-microphone"></i>
+          </button>
+        </div>
+        <div>
+          <div id="voice-studio-timer" class="text-xl font-mono font-bold text-pink-950 tracking-widest">00:00</div>
+          <p id="voice-studio-status" class="text-xs text-pink-600 mt-1">Tap the circle to start speaking</p>
+        </div>
+
+        <!-- Live Waveform -->
+        <div class="h-12 w-full bg-pink-50/80 rounded-2xl border border-pink-200 overflow-hidden">
+          <canvas id="voice-studio-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- Silence Trimmer Badge -->
+        <div class="flex items-center justify-between text-xs bg-pink-50/70 p-3 rounded-2xl border border-pink-200 text-left">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-xl bg-pink-200 text-pink-700 flex items-center justify-center text-sm">
+              <i class="ph-bold ph-scissors"></i>
+            </div>
+            <div>
+              <span class="text-xs font-bold text-pink-950 block">Smart Dead-Air Trimmer</span>
+              <span class="text-[10px] text-pink-600">Skips awkward pauses for snappy TikTok pacing</span>
+            </div>
+          </div>
+          <span id="voice-studio-silence-stats" class="text-[11px] font-mono text-pink-700 font-bold">Ready</span>
+        </div>
+      </div>
+
+      <!-- Built-in Lo-Fi Fashion Beat -->
+      <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-lg">
+            🎵
+          </div>
+          <div>
+            <span class="text-xs font-bold text-pink-950 block">Kiki's Dream Lo-Fi Beat 🎀</span>
+            <span class="text-[10px] text-pink-600">Soft music-box chords & gentle vinyl warmth</span>
+          </div>
+        </div>
+        <button onclick="toggleBeatPreview()" id="btn-voice-beat" class="px-3 py-1.5 rounded-xl bg-pink-100 hover:bg-pink-200 text-xs font-bold text-pink-800 transition active:scale-95">
+          Play Beat
+        </button>
+      </div>
+
+      <!-- Action Button -->
+      <button onclick="switchTool('video')" class="w-full py-3.5 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-serif font-bold text-sm shadow-md transition flex items-center justify-center gap-1.5 active:scale-98">
+        <span>Attach Audio to Video Maker 🎬</span>
+      </button>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TOOL 4: 📜 SCRIPT TELEPROMPTER & IDEAS (Smooth Scrolling Lines) -->
+    <!-- ================================================================= -->
+    <div id="tool-prompter" class="tool-view hidden space-y-4 max-w-2xl mx-auto">
+      <div class="space-y-1 text-center">
+        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 04 · Teleprompter & Ideas</span>
+        <h2 class="text-2xl font-bold font-serif text-pink-950">Read Your Lines Smoothly</h2>
+        <p class="text-xs text-pink-800">Never stumble on camera! Words gently scroll up as you speak.</p>
+      </div>
+
+      <!-- Floating Prompter Screen -->
+      <div class="bg-white/95 border-2 border-pink-300 rounded-3xl p-5 shadow-md space-y-3">
+        <div class="flex items-center justify-between text-xs border-b border-pink-200 pb-2">
+          <div class="flex items-center gap-1.5 font-bold text-pink-950">
+            <span>📜</span>
+            <span>Live Prompter</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-pink-600">Scroll Speed:</span>
+            <input type="range" id="prompter-speed" min="1" max="5" value="2" class="w-20">
+          </div>
+        </div>
+
+        <div id="prompter-box" class="h-44 overflow-y-auto rounded-2xl bg-pink-50/50 p-4 border border-pink-200 text-center flex flex-col items-center justify-start scroll-smooth">
+          <div id="prompter-content" class="text-base font-serif font-semibold text-pink-950 leading-relaxed py-8">
+            "Hey guys! Today I'm putting together my favorite cozy look 🎀 Start with the strawberry knit, add my favorite pleated skirt, and finish with retro cream sneakers ✨ What do you think?"
+          </div>
+        </div>
+
+        <!-- Prompter Play Controls -->
+        <div class="flex items-center justify-center gap-3 pt-1">
+          <button onclick="togglePrompterScroll()" id="btn-prompter-toggle" class="px-5 py-2 rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xs font-bold shadow-sm transition active:scale-95 flex items-center gap-1">
+            <i id="prompter-btn-icon" class="ph-bold ph-play"></i>
+            <span id="prompter-btn-label">Start Scrolling</span>
+          </button>
+          <button onclick="resetPrompterScroll()" class="px-4 py-2 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-xs font-semibold text-pink-700 shadow-xs transition active:scale-95">
+            Rewind
+          </button>
+        </div>
+      </div>
+
+      <!-- Script Notepad -->
+      <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
+        <div class="flex items-center justify-between text-xs font-bold text-pink-950">
+          <span>Edit Script & Notes:</span>
+          <span class="text-[10px] text-pink-500 font-normal">Auto-saves to your phone ✨</span>
+        </div>
+        <textarea id="script-pad" rows="3" class="w-full bg-pink-50/60 border border-pink-200 rounded-2xl p-3 text-xs text-pink-950 placeholder-pink-400 focus:outline-none focus:border-pink-400 font-sans leading-relaxed"></textarea>
+      </div>
+
+      <!-- Viral Hook Category Formulas -->
+      <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2.5 shadow-xs">
+        <span class="text-xs font-bold text-pink-950 block">Tap a Viral TikTok Idea to Load:</span>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button onclick="loadPrompterHook('Storytime about the most unexpected thing that happened to me today... you will not believe this 🎀')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">📖 Wild Storytime</span>
+            <span class="text-[10px] text-pink-600">High engagement hook</span>
+          </button>
+          <button onclick="loadPrompterHook('Come spend a productive morning with me getting ready for the day ✨')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">☕ Morning Routine</span>
+            <span class="text-[10px] text-pink-600">Aesthetic lifestyle vlog</span>
+          </button>
+          <button onclick="loadPrompterHook('Here are 3 things in my routine that literally changed my life forever 🌸')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">💡 Game Changers</span>
+            <span class="text-[10px] text-pink-600">Save & share viral format</span>
+          </button>
+          <button onclick="loadPrompterHook('Unboxing everything I ordered this week... wait till you see the last one 💖')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">📦 Cute Haul</span>
+            <span class="text-[10px] text-pink-600">Curiosity retention hook</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- TOOL 5: 🎨 COVER & THUMBNAIL DESIGNER (9:16 Profile Covers) -->
+    <!-- ================================================================= -->
+    <div id="tool-cover" class="tool-view hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="space-y-1">
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 05 · Cover Designer</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">Aesthetic TikTok Covers</h2>
+            <p class="text-xs text-pink-800">Make eye-catching thumbnails with cute stickers so your TikTok grid looks gorgeous!</p>
+          </div>
+
+          <!-- Cover Title Input -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
+            <label class="text-xs font-bold text-pink-950 block">Video Cover Headline:</label>
+            <input type="text" id="cover-title-input" value="DAY IN MY LIFE 🎀" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2.5 text-xs text-pink-950 font-bold focus:outline-none focus:border-pink-500">
+          </div>
+
+          <!-- Background Color / Photo Choice -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
+            <span class="text-xs font-bold text-pink-950 block">Cover Background:</span>
+            <div class="grid grid-cols-4 gap-2 text-xs">
+              <button onclick="setCoverBg('milk')" class="cover-bg-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-medium text-pink-900" data-bg="milk">
+                🍓 Milk
+              </button>
+              <button onclick="setCoverBg('sunset')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="sunset">
+                🍑 Peach
+              </button>
+              <button onclick="setCoverBg('lilac')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="lilac">
+                💜 Lilac
+              </button>
+              <button onclick="setCoverBg('photo')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="photo">
+                📸 Photo
+              </button>
+            </div>
+          </div>
+
+          <!-- Stickers Toggle -->
+          <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
+            <span class="text-xs font-bold text-pink-950 block">Stickers on Cover:</span>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <button onclick="toggleCoverSticker('bow')" id="csticker-bow" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
+                🎀 Big Ribbon
+              </button>
+              <button onclick="toggleCoverSticker('sparkle')" id="csticker-sparkle" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
+                ✨ Sparkles
+              </button>
+              <button onclick="toggleCoverSticker('tape')" id="csticker-tape" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
+                🏷️ Washi Tape
+              </button>
+              <button onclick="toggleCoverSticker('kiki')" id="csticker-kiki" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
+                🌸 Kiki's Edit
+              </button>
+            </div>
+          </div>
+
+          <!-- Download Cover -->
+          <button onclick="downloadCoverImage()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
+            <i class="ph-bold ph-download-simple text-lg"></i>
+            <span>Download Cover (Camera Roll) 🎀</span>
+          </button>
+        </div>
+
+        <!-- Cover Preview Canvas -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
+          <span class="text-xs font-bold text-pink-950 font-serif">9:16 TikTok Cover Preview</span>
+          <div class="relative w-[270px] h-[480px] rounded-[32px] overflow-hidden border-4 border-pink-200 shadow-xl shadow-pink-200/50 bg-white flex items-center justify-center">
+            <canvas id="cover-canvas" width="540" height="960" class="w-full h-full object-cover block"></canvas>
+          </div>
+          <p class="text-[10px] text-pink-500">Ready for your TikTok profile feed</p>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 5-TOOL BOTTOM NAVIGATION TAB BAR -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur-md border-t border-pink-200/80 px-2 py-1.5 shadow-lg shadow-pink-200/50">
+    <div class="max-w-lg mx-auto grid grid-cols-5 gap-1">
+      <button onclick="switchTool('video')" id="nav-btn-video" class="nav-tab active flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-700 bg-pink-100/90 font-bold transition active:scale-95">
+        <span class="text-base">🎬</span>
+        <span class="text-[9px] font-bold mt-0.5">Video</span>
+      </button>
+
+      <button onclick="switchTool('photos')" id="nav-btn-photos" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
+        <span class="text-base">📸</span>
+        <span class="text-[9px] font-medium mt-0.5">Photos</span>
+      </button>
+
+      <button onclick="switchTool('voice')" id="nav-btn-voice" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
+        <span class="text-base">🎙️</span>
+        <span class="text-[9px] font-medium mt-0.5">Voice</span>
+      </button>
+
+      <button onclick="switchTool('prompter')" id="nav-btn-prompter" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
+        <span class="text-base">📜</span>
+        <span class="text-[9px] font-medium mt-0.5">Prompter</span>
+      </button>
+
+      <button onclick="switchTool('cover')" id="nav-btn-cover" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
+        <span class="text-base">🎨</span>
+        <span class="text-[9px] font-medium mt-0.5">Covers</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- OFFLINE APP JAVASCRIPT ENGINE -->
+  <script>
+    /* =========================================================================
+       GLOBAL APP STATE
+       ========================================================================= */
+    let activeTool = 'video';
+    let uploadedImages = [];
+    let activeLayout = 'bokeh';
+    let selectedVibe = 'cherrypop';
+    let isSafeZoneVisible = false;
+    let previewLoopReq = null;
+
+    // Photo Editor State
+    let editorImage = null;
+    let editorRawImage = null;
+    let editorRatio = '9:16';
+    let editorEmulsion = 'portra';
+    let editorGlow = 40;
+    let editorWarmth = 15;
+    let editorGrain = 25;
+    let editorContrast = 10;
+    let isComparingOriginal = false;
+
+    // Audio Engine State
+    let audioContext = null;
+    let userAudioBuffer = null;
+    let detectedSilences = [];
+    let isRecording = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordStartTime = 0;
+    let recordTimerInterval = null;
+    let micStream = null;
+    let micAnalyser = null;
+    let micAnimId = null;
+    let beatSourceNode = null;
+    let isBeatPlaying = false;
+
+    // Prompter State
+    let isPrompterScrolling = false;
+    let prompterInterval = null;
+
+    // Cover Designer State
+    let coverBgMode = 'milk';
+    let coverStickers = { bow: true, sparkle: true, tape: true, kiki: true };
+
+    const HOOK_PROMPTS = [
+      "fit check with my favorite pieces ✨",
+      "styling this outfit for today 🎀",
+      "outfit formula that literally never fails 💫",
+      "things in my closet that make me happy 🌸",
+      "get ready with me: editorial edition 📸",
+      "how to style this piece 3 ways ⚡",
+      "a little outfit diary for Kiki 💖"
+    ];
+
+    function showToast(msg, icon = '🎀') {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      const iconElem = document.getElementById('toast-icon');
+      text.innerText = msg;
+      iconElem.innerText = icon;
+      toast.classList.remove('hidden');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    /* Tool Switching Controller */
+    const TOOL_SUBTITLES = {
+      video: 'Tool: 🎬 Video Maker',
+      photos: 'Tool: 📸 Insider Photo Studio',
+      voice: 'Tool: 🎙️ Voice Studio',
+      prompter: 'Tool: 📜 Script Teleprompter',
+      cover: 'Tool: 🎨 Cover Designer'
+    };
+
+    function switchTool(toolKey) {
+      activeTool = toolKey;
+      document.querySelectorAll('.tool-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById(`tool-${toolKey}`).classList.remove('hidden');
+      document.getElementById('active-tool-subtitle').innerText = TOOL_SUBTITLES[toolKey];
+
+      ['video', 'photos', 'voice', 'prompter', 'cover'].forEach(k => {
+        const btn = document.getElementById(`nav-btn-${k}`);
+        if (k === toolKey) {
+          btn.className = 'nav-tab active flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-700 bg-pink-100/90 font-bold transition shadow-xs active:scale-95';
+        } else {
+          btn.className = 'nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95';
+        }
+      });
+
+      if (toolKey === 'photos') {
+        renderEditorCanvas();
+      } else if (toolKey === 'cover') {
+        renderCoverCanvas();
+      }
+      showToast(`Switched to ${TOOL_SUBTITLES[toolKey]}`, '✨');
+    }
+
+    function resetCurrentTool() {
+      if (activeTool === 'video') {
+        uploadedImages = [];
+        refreshThumbnails();
+        showToast('Video photos cleared 🎬', '✨');
+      } else if (activeTool === 'photos') {
+        editorImage = null;
+        editorRawImage = null;
+        document.getElementById('editor-empty-state').classList.remove('hidden');
+        renderEditorCanvas();
+        showToast('Photo editor reset 📸', '✨');
+      } else if (activeTool === 'voice') {
+        userAudioBuffer = null;
+        document.getElementById('voice-studio-timer').innerText = '00:00';
+        document.getElementById('voice-studio-silence-stats').innerText = 'Ready';
+        showToast('Voice recordings reset 🎙️', '✨');
+      } else if (activeTool === 'prompter') {
+        resetPrompterScroll();
+        showToast('Prompter reset 📜', '✨');
+      } else if (activeTool === 'cover') {
+        document.getElementById('cover-title-input').value = 'DAY IN MY LIFE 🎀';
+        renderCoverCanvas();
+        showToast('Cover designer reset 🎨', '✨');
+      }
+    }
+
+    /* =========================================================================
+       TOOL 2: 📸 INSIDER PHOTO STUDIO ENGINE
+       ========================================================================= */
+    const editorCanvas = document.getElementById('photo-editor-canvas');
+    const editorCtx = editorCanvas.getContext('2d');
+    const editorPhotoInput = document.getElementById('editor-photo-input');
+    const editorEmptyState = document.getElementById('editor-empty-state');
+    const btnCompare = document.getElementById('btn-compare-photo');
+
+    // Sliders
+    const sliderGlow = document.getElementById('slider-glow');
+    const sliderWarmth = document.getElementById('slider-warmth');
+    const sliderGrain = document.getElementById('slider-grain');
+    const sliderContrast = document.getElementById('slider-contrast');
+
+    sliderGlow.addEventListener('input', (e) => {
+      editorGlow = parseInt(e.target.value, 10);
+      document.getElementById('val-glow').innerText = `${editorGlow}%`;
+      renderEditorCanvas();
+    });
+
+    sliderWarmth.addEventListener('input', (e) => {
+      editorWarmth = parseInt(e.target.value, 10);
+      document.getElementById('val-warmth').innerText = `${editorWarmth > 0 ? '+' : ''}${editorWarmth}%`;
+      renderEditorCanvas();
+    });
+
+    sliderGrain.addEventListener('input', (e) => {
+      editorGrain = parseInt(e.target.value, 10);
+      document.getElementById('val-grain').innerText = `${editorGrain}%`;
+      renderEditorCanvas();
+    });
+
+    sliderContrast.addEventListener('input', (e) => {
+      editorContrast = parseInt(e.target.value, 10);
+      document.getElementById('val-contrast').innerText = `${editorContrast > 0 ? '+' : ''}${editorContrast}%`;
+      renderEditorCanvas();
+    });
+
+    editorPhotoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          editorImage = img;
+          editorRawImage = img;
+          editorEmptyState.classList.add('hidden');
+          renderEditorCanvas();
+          showToast('Photo loaded into Retouch Studio! 📸', '🎀');
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Hold to Compare
+    btnCompare.addEventListener('mousedown', () => { isComparingOriginal = true; renderEditorCanvas(); });
+    btnCompare.addEventListener('mouseup', () => { isComparingOriginal = false; renderEditorCanvas(); });
+    btnCompare.addEventListener('mouseleave', () => { isComparingOriginal = false; renderEditorCanvas(); });
+    btnCompare.addEventListener('touchstart', (e) => { e.preventDefault(); isComparingOriginal = true; renderEditorCanvas(); }, { passive: false });
+    btnCompare.addEventListener('touchend', (e) => { e.preventDefault(); isComparingOriginal = false; renderEditorCanvas(); });
+
+    function setEditorRatio(ratioKey) {
+      editorRatio = ratioKey;
+      document.querySelectorAll('.crop-btn').forEach(btn => {
+        if (btn.dataset.ratio === ratioKey) {
+          btn.className = 'crop-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-bold text-pink-900 transition';
+        } else {
+          btn.className = 'crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition';
+        }
+      });
+      document.getElementById('active-crop-name').innerText = (ratioKey === '9:16') ? '9:16 Vertical (TikTok)' : (ratioKey === '4:5') ? '4:5 (Portrait Feed)' : '1:1 (Square)';
+      renderEditorCanvas();
+    }
+
+    const EMULSION_NAMES = {
+      portra: 'Portra Warmth 🌸',
+      flash: 'Studio Flash 📸',
+      parisian: 'Parisian Chic 🌹',
+      copenhagen: 'Copenhagen Clean ✨',
+      film90: '90s Amber Film 🎞️',
+      noir: 'Noir Velvet 🖤'
+    };
+
+    function setEmulsion(emulsionKey) {
+      editorEmulsion = emulsionKey;
+      document.querySelectorAll('.emulsion-btn').forEach(btn => {
+        if (btn.dataset.emulsion === emulsionKey) {
+          btn.className = 'emulsion-btn active p-2.5 rounded-2xl border text-left bg-pink-100 border-pink-400 font-bold text-pink-900 transition';
+        } else {
+          btn.className = 'emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition';
+        }
+      });
+      document.getElementById('active-emulsion-name').innerText = EMULSION_NAMES[emulsionKey];
+      renderEditorCanvas();
+    }
+
+    function loadEditorSamplePhoto() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1080;
+      canvas.height = 1920;
+      const ctx = canvas.getContext('2d');
+
+      const grad = ctx.createLinearGradient(0, 0, 0, 1920);
+      grad.addColorStop(0, '#ffe4ec');
+      grad.addColorStop(0.5, '#fbcfe8');
+      grad.addColorStop(1, '#ffffff');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      const rad = ctx.createRadialGradient(540, 850, 100, 540, 850, 480);
+      rad.addColorStop(0, '#f472b6');
+      rad.addColorStop(1, 'transparent');
+      ctx.globalAlpha = 0.55;
+      ctx.fillStyle = rad;
+      ctx.beginPath();
+      ctx.arc(540, 850, 480, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+
+      ctx.fillStyle = '#4a1525';
+      ctx.font = 'bold 72px "Playfair Display", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('KIKI EDITORIAL 🎀', 540, 850);
+
+      ctx.fillStyle = '#db2777';
+      ctx.font = '600 32px "Outfit", sans-serif';
+      ctx.fillText('Celebrity Retouch Sample', 540, 920);
+
+      const img = new Image();
+      img.onload = () => {
+        editorImage = img;
+        editorRawImage = img;
+        editorEmptyState.classList.add('hidden');
+        renderEditorCanvas();
+      };
+      img.src = canvas.toDataURL();
+      showToast('Sample photo loaded for retouching! 🌸', '✨');
+    }
+
+    function renderEditorCanvas() {
+      const cw = 720;
+      const ch = 1280;
+      editorCtx.clearRect(0, 0, cw, ch);
+
+      // Clean background
+      editorCtx.fillStyle = '#fff5f8';
+      editorCtx.fillRect(0, 0, cw, ch);
+
+      if (!editorImage) return;
+
+      // Calculate Target Crop Box
+      let cropW = cw;
+      let cropH = ch;
+      if (editorRatio === '4:5') {
+        cropW = cw;
+        cropH = Math.floor(cropW * (5 / 4));
+      } else if (editorRatio === '1:1') {
+        cropW = cw;
+        cropH = cw;
+      }
+      const cropX = (cw - cropW) / 2;
+      const cropY = (ch - cropH) / 2;
+
+      // Draw Base Image
+      editorCtx.save();
+      editorCtx.beginPath();
+      editorCtx.rect(cropX, cropY, cropW, cropH);
+      editorCtx.clip();
+
+      const scale = Math.max(cropW / editorImage.width, cropH / editorImage.height);
+      const imgW = editorImage.width * scale;
+      const imgH = editorImage.height * scale;
+      const posX = cropX + (cropW - imgW) / 2;
+      const posY = cropY + (cropH - imgH) / 2;
+
+      editorCtx.drawImage(editorImage, posX, posY, imgW, imgH);
+
+      // If holding compare, skip shaders
+      if (isComparingOriginal) {
+        editorCtx.restore();
+        editorCtx.fillStyle = 'rgba(74, 21, 37, 0.75)';
+        editorCtx.beginPath();
+        editorCtx.roundRect(cw / 2 - 70, 30, 140, 32, 16);
+        editorCtx.fill();
+        editorCtx.fillStyle = '#ffffff';
+        editorCtx.font = 'bold 13px "Outfit", sans-serif';
+        editorCtx.textAlign = 'center';
+        editorCtx.fillText('ORIGINAL PHOTO', cw / 2, 51);
+        return;
+      }
+
+      // 1. Emulsion Color Grading LUT pass
+      if (editorEmulsion === 'portra') {
+        // Creamy pastel highlights & warmth
+        const portra = editorCtx.createLinearGradient(0, 0, 0, ch);
+        portra.addColorStop(0, 'rgba(254, 243, 199, 0.22)');
+        portra.addColorStop(1, 'rgba(251, 207, 232, 0.16)');
+        editorCtx.fillStyle = portra;
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+      else if (editorEmulsion === 'flash') {
+        // Hard-edge flash contrast punch
+        const flashVig = editorCtx.createRadialGradient(cw / 2, ch / 2, cropW * 0.2, cw / 2, ch / 2, cropW * 0.75);
+        flashVig.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+        flashVig.addColorStop(1, 'rgba(0, 0, 0, 0.35)');
+        editorCtx.fillStyle = flashVig;
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+      else if (editorEmulsion === 'parisian') {
+        // Muted greens & quiet luxury
+        editorCtx.fillStyle = 'rgba(244, 114, 182, 0.08)';
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+        const pVig = editorCtx.createRadialGradient(cw / 2, ch / 2, cropW * 0.3, cw / 2, ch / 2, cropW * 0.8);
+        pVig.addColorStop(0, 'transparent');
+        pVig.addColorStop(1, 'rgba(30, 20, 25, 0.3)');
+        editorCtx.fillStyle = pVig;
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+      else if (editorEmulsion === 'copenhagen') {
+        // Clean glass skin daylight
+        const cope = editorCtx.createRadialGradient(cw / 2, ch / 2, 80, cw / 2, ch / 2, cropW * 0.6);
+        cope.addColorStop(0, 'rgba(224, 242, 254, 0.25)');
+        cope.addColorStop(1, 'rgba(240, 249, 255, 0.05)');
+        editorCtx.fillStyle = cope;
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+      else if (editorEmulsion === 'film90') {
+        // 90s Amber film wash
+        editorCtx.fillStyle = 'rgba(180, 83, 9, 0.12)';
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+      else if (editorEmulsion === 'noir') {
+        // Velvet Monochrome
+        editorCtx.fillStyle = 'rgba(20, 10, 15, 0.45)';
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+      }
+
+      // 2. Pro-Mist Diffusion Glow Shader
+      if (editorGlow > 0) {
+        editorCtx.save();
+        editorCtx.globalAlpha = (editorGlow / 100) * 0.45;
+        editorCtx.filter = 'blur(16px) brightness(1.2)';
+        editorCtx.drawImage(editorImage, posX, posY, imgW, imgH);
+        editorCtx.restore();
+      }
+
+      // 3. Golden Hour Warmth Lever
+      if (editorWarmth !== 0) {
+        editorCtx.save();
+        if (editorWarmth > 0) {
+          editorCtx.fillStyle = `rgba(251, 146, 60, ${(editorWarmth / 50) * 0.22})`;
+        } else {
+          editorCtx.fillStyle = `rgba(56, 189, 248, ${(Math.abs(editorWarmth) / 50) * 0.2})`;
+        }
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+        editorCtx.restore();
+      }
+
+      // 4. Studio Punch Contrast Lever
+      if (editorContrast !== 0) {
+        editorCtx.save();
+        const contrastGrad = editorCtx.createRadialGradient(cw / 2, ch / 2, cropW * 0.2, cw / 2, ch / 2, cropW * 0.8);
+        contrastGrad.addColorStop(0, 'transparent');
+        contrastGrad.addColorStop(1, `rgba(0, 0, 0, ${Math.max(0, editorContrast / 50) * 0.45})`);
+        editorCtx.fillStyle = contrastGrad;
+        editorCtx.fillRect(cropX, cropY, cropW, cropH);
+        editorCtx.restore();
+      }
+
+      // 5. 35mm Organic Film Grain Pass
+      if (editorGrain > 0) {
+        editorCtx.save();
+        const grainCount = Math.floor((editorGrain / 100) * 1200);
+        editorCtx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+        for (let i = 0; i < grainCount; i++) {
+          const gx = cropX + Math.random() * cropW;
+          const gy = cropY + Math.random() * cropH;
+          editorCtx.fillRect(gx, gy, 1.2, 1.2);
+        }
+        editorCtx.restore();
+      }
+
+      editorCtx.restore();
+    }
+
+    function downloadEditedPhoto() {
+      if (!editorImage) {
+        showToast('Load a photo to save first! 📸', '⚠️');
+        return;
+      }
+      const link = document.createElement('a');
+      link.download = `SisterKiki-Photo-${Date.now()}.png`;
+      link.href = editorCanvas.toDataURL('image/png');
+      link.click();
+      showToast('Retouched photo saved to Camera Roll! 🎀', '💖');
+    }
+
+    function sendPhotoToVideo() {
+      if (!editorImage) {
+        showToast('Please load a photo first 📸', '⚠️');
+        return;
+      }
+      const newImg = new Image();
+      newImg.onload = () => {
+        uploadedImages.push(newImg);
+        refreshThumbnails();
+        switchTool('video');
+        showToast('Photo added to Video Maker! 🎬', '✨');
+      };
+      newImg.src = editorCanvas.toDataURL('image/png');
+    }
+
+    function sendPhotoToCover() {
+      if (!editorImage) {
+        showToast('Please load a photo first 📸', '⚠️');
+        return;
+      }
+      const newImg = new Image();
+      newImg.onload = () => {
+        uploadedImages = [newImg, ...uploadedImages];
+        refreshThumbnails();
+        setCoverBg('photo');
+        switchTool('cover');
+        showToast('Photo set as Video Cover! 🎨', '✨');
+      };
+      newImg.src = editorCanvas.toDataURL('image/png');
+    }
+
+    /* =========================================================================
+       TOOL 1: 🎬 VIDEO MAKER LOGIC
+       ========================================================================= */
+    const photoInput = document.getElementById('photo-input');
+    const thumbWrap = document.getElementById('thumb-preview-wrap');
+    const thumbStrip = document.getElementById('thumbnail-strip');
+    const photoCountLabel = document.getElementById('photo-count-label');
+    const emptyState = document.getElementById('canvas-empty-state');
+
+    photoInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            uploadedImages.push(img);
+            refreshThumbnails();
+            renderCoverCanvas();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      showToast('Photos loaded! Auto-fitting 9:16 ✨', '🎀');
+    });
+
+    function refreshThumbnails() {
+      thumbStrip.innerHTML = '';
+      if (uploadedImages.length > 0) {
+        thumbWrap.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        photoCountLabel.innerText = `${uploadedImages.length} photo${uploadedImages.length > 1 ? 's' : ''} ready`;
+      } else {
+        thumbWrap.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+      }
+
+      uploadedImages.forEach((img, idx) => {
+        const thumbDiv = document.createElement('div');
+        thumbDiv.className = 'relative flex-shrink-0 w-16 h-24 rounded-2xl overflow-hidden border-2 border-pink-200 bg-pink-50 group shadow-xs';
+
+        const thumbImg = document.createElement('img');
+        thumbImg.src = img.src;
+        thumbImg.className = 'w-full h-full object-cover';
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'absolute top-1 right-1 w-5 h-5 rounded-full bg-pink-600 text-white flex items-center justify-center text-[10px] hover:bg-rose-700 shadow-xs transition';
+        delBtn.innerHTML = '<i class="ph-bold ph-x"></i>';
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          uploadedImages.splice(idx, 1);
+          refreshThumbnails();
+          renderCoverCanvas();
+        };
+
+        const indexBadge = document.createElement('span');
+        indexBadge.className = 'absolute bottom-1 left-1 bg-white/90 backdrop-blur text-[9px] font-mono px-1.5 py-0.5 rounded-full text-pink-700 font-bold border border-pink-200';
+        indexBadge.innerText = `#${idx + 1}`;
+
+        thumbDiv.appendChild(thumbImg);
+        thumbDiv.appendChild(delBtn);
+        thumbDiv.appendChild(indexBadge);
+        thumbStrip.appendChild(thumbDiv);
+      });
+    }
+
+    const LAYOUT_NAMES = {
+      bokeh: 'Dreamy Bokeh Wings 🌸',
+      polaroid: 'Polaroid Chic 📸',
+      split: 'Editorial Split 🎀',
+      drift: 'Kinetic Drift ✨'
+    };
+
+    function selectLayout(layoutKey) {
+      activeLayout = layoutKey;
+      document.querySelectorAll('.layout-btn').forEach(btn => {
+        if (btn.dataset.layout === layoutKey) {
+          btn.className = 'layout-btn active p-2.5 rounded-2xl border text-left bg-pink-100/90 border-pink-400 shadow-xs transition';
+        } else {
+          btn.className = 'layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition';
+        }
+      });
+      document.getElementById('active-layout-name').innerText = LAYOUT_NAMES[layoutKey];
+    }
+
+    const VIBE_METADATA = {
+      cherrypop: 'Strawberry Milk 🍓',
+      cleangirl: 'Clean Girl ✨',
+      parisian: 'Parisian Rose 🌹',
+      golden: 'Golden Hour ☀️',
+      film90s: '90s Film 🎞️',
+      runway: 'Runway Flash 📸',
+      sunset: 'Sunset Studio 🍑',
+      moody: 'Moody Olive 🍃'
+    };
+
+    function selectVibe(vibeKey) {
+      selectedVibe = vibeKey;
+      document.querySelectorAll('.vibe-btn').forEach(btn => {
+        if (btn.dataset.vibe === vibeKey) {
+          btn.className = 'vibe-btn active p-2 rounded-xl border text-left bg-pink-100/90 border-pink-400 text-xs font-bold text-pink-950 transition';
+        } else {
+          btn.className = 'vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition';
+        }
+      });
+      document.getElementById('active-vibe-name').innerText = VIBE_METADATA[vibeKey];
+    }
+
+    function shuffleHookPrompt() {
+      const current = document.getElementById('hook-text-input').value;
+      const candidates = HOOK_PROMPTS.filter(p => p !== current);
+      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      document.getElementById('hook-text-input').value = chosen;
+      showToast('New hook idea applied! 🎀', '💡');
+    }
+
+    function toggleSafeZone() {
+      isSafeZoneVisible = !isSafeZoneVisible;
+      const safeZoneOverlay = document.getElementById('preview-safe-zone');
+      const btnText = document.getElementById('safe-zone-btn-text');
+      if (isSafeZoneVisible) {
+        safeZoneOverlay.classList.remove('hidden');
+        btnText.innerText = 'Safe Zone: On 🎀';
+        showToast('TikTok UI Safe Zones active', '🎀');
+      } else {
+        safeZoneOverlay.classList.add('hidden');
+        btnText.innerText = 'Safe Zone: Off';
+      }
+    }
+
+    function loadSampleFashionLooks() {
+      uploadedImages = [];
+      const sampleFits = [
+        ['#fff0f5', '#f472b6', 'OOTD 01 🎀', 'Strawberry Milk Knit & Tennis Skirt'],
+        ['#fff5eb', '#fb923c', 'OOTD 02 🌸', 'Parisian Trench & Chunky Loafers'],
+        ['#f0fdf4', '#4ade80', 'OOTD 03 🍃', 'Mint Blazer & Retro Cream Sneakers'],
+        ['#faf5ff', '#c084fc', 'OOTD 04 💖', 'Lilac Balletcore Slip & Bows']
+      ];
+
+      sampleFits.forEach(([bg, accent, title, desc]) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1920;
+        const ctx = canvas.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 0, 0, 1920);
+        grad.addColorStop(0, bg);
+        grad.addColorStop(1, '#ffffff');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        ctx.strokeStyle = '#fbcfe8';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(60, 60, 960, 1800);
+
+        const radGrad = ctx.createRadialGradient(540, 900, 80, 540, 900, 420);
+        radGrad.addColorStop(0, accent);
+        radGrad.addColorStop(1, 'transparent');
+        ctx.globalAlpha = 0.45;
+        ctx.fillStyle = radGrad;
+        ctx.beginPath();
+        ctx.arc(540, 900, 420, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+
+        ctx.fillStyle = '#4a1525';
+        ctx.font = 'bold 68px "Playfair Display", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, 540, 880);
+
+        ctx.fillStyle = '#db2777';
+        ctx.font = '600 32px "Outfit", sans-serif';
+        ctx.fillText(desc, 540, 950);
+
+        ctx.fillStyle = '#9d174d';
+        ctx.font = '600 22px "JetBrains Mono", monospace';
+        ctx.fillText('SISTER KIKI STUDIO · TIKTOK SUITE 🎀', 540, 1020);
+
+        const img = new Image();
+        img.onload = () => {
+          uploadedImages.push(img);
+          refreshThumbnails();
+          renderCoverCanvas();
+        };
+        img.src = canvas.toDataURL();
+      });
+
+      showToast('4 Strawberry milk sample looks loaded! 🎀', '🌸');
+    }
+
+    /* Live 60fps Video Preview */
+    const previewCanvas = document.getElementById('preview-canvas');
+    const prevCtx = previewCanvas.getContext('2d');
+    const hookTextInput = document.getElementById('hook-text-input');
+
+    function renderCanvasFrame(ctx, cw, ch, timeSec, totalDuration, layout, vibe, hookText) {
+      ctx.clearRect(0, 0, cw, ch);
+
+      const photoCount = uploadedImages.length || 1;
+      const slideDuration = totalDuration / photoCount;
+      const activeIdx = Math.min(photoCount - 1, Math.floor(timeSec / slideDuration));
+      const activeImg = uploadedImages[activeIdx];
+      const slideLocalTime = timeSec % slideDuration;
+      const progress = slideLocalTime / slideDuration;
+
+      ctx.fillStyle = '#fff5f8';
+      ctx.fillRect(0, 0, cw, ch);
+
+      if (!activeImg) return;
+
+      if (layout === 'bokeh') {
+        ctx.save();
+        ctx.filter = 'blur(28px) saturate(1.2) brightness(0.95)';
+        const bgScale = Math.max(cw / activeImg.width, ch / activeImg.height);
+        const bgW = activeImg.width * bgScale;
+        const bgH = activeImg.height * bgScale;
+        ctx.drawImage(activeImg, (cw - bgW) / 2, (ch - bgH) / 2, bgW, bgH);
+        ctx.restore();
+
+        const fitScale = Math.min(cw / activeImg.width, ch / activeImg.height) * (1.0 + progress * 0.04);
+        const fitW = activeImg.width * fitScale;
+        const fitH = activeImg.height * fitScale;
+        ctx.drawImage(activeImg, (cw - fitW) / 2, (ch - fitH) / 2, fitW, fitH);
+      }
+      else if (layout === 'polaroid') {
+        ctx.save();
+        ctx.fillStyle = '#fff0f5';
+        ctx.fillRect(0, 0, cw, ch);
+
+        const cardW = cw * 0.82;
+        const cardH = cardW * 1.25;
+        const cardX = (cw - cardW) / 2;
+        const cardY = (ch - cardH) / 2;
+
+        ctx.translate(cw / 2, ch / 2);
+        const tilt = Math.sin(activeIdx * 1.5) * 0.035;
+        ctx.rotate(tilt);
+        ctx.translate(-cw / 2, -ch / 2);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(244, 114, 182, 0.25)';
+        ctx.shadowBlur = 24;
+        ctx.fillRect(cardX, cardY, cardW, cardH);
+        ctx.shadowColor = 'transparent';
+
+        const pMargin = 20;
+        const pW = cardW - pMargin * 2;
+        const pH = cardH - 85;
+        const imgScale = Math.max(pW / activeImg.width, pH / activeImg.height);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(cardX + pMargin, cardY + pMargin, pW, pH);
+        ctx.clip();
+        ctx.drawImage(activeImg, cardX + pMargin, cardY + pMargin, activeImg.width * imgScale, activeImg.height * imgScale);
+        ctx.restore();
+
+        ctx.fillStyle = 'rgba(244, 114, 182, 0.55)';
+        ctx.fillRect(cardX + (cardW / 2) - 45, cardY - 10, 90, 22);
+
+        ctx.fillStyle = '#4a1525';
+        ctx.font = '600 24px "Cormorant Garamond", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`Kiki · Fit #${activeIdx + 1} 🎀`, cw / 2, cardY + cardH - 30);
+        ctx.restore();
+      }
+      else if (layout === 'split') {
+        const nextImg = uploadedImages[(activeIdx + 1) % photoCount] || activeImg;
+        const halfH = ch / 2;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, cw, halfH - 2);
+        ctx.clip();
+        const topScale = Math.max(cw / activeImg.width, halfH / activeImg.height);
+        ctx.drawImage(activeImg, (cw - activeImg.width * topScale) / 2, (halfH - activeImg.height * topScale) / 2, activeImg.width * topScale, activeImg.height * topScale);
+        ctx.restore();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, halfH + 2, cw, halfH);
+        ctx.clip();
+        const btmScale = Math.max(cw / nextImg.width, halfH / nextImg.height);
+        ctx.drawImage(nextImg, (cw - nextImg.width * btmScale) / 2, halfH + 2 + (halfH - nextImg.height * btmScale) / 2, nextImg.width * btmScale, nextImg.height * btmScale);
+        ctx.restore();
+
+        ctx.fillStyle = '#f472b6';
+        ctx.fillRect(0, halfH - 2, cw, 4);
+      }
+      else if (layout === 'drift') {
+        const coverScale = Math.max(cw / activeImg.width, ch / activeImg.height) * (1.05 + progress * 0.08);
+        const coverW = activeImg.width * coverScale;
+        const coverH = activeImg.height * coverScale;
+        const panX = Math.sin(timeSec * 0.8) * 18;
+        const panY = -progress * 22;
+        ctx.drawImage(activeImg, (cw - coverW) / 2 + panX, (ch - coverH) / 2 + panY, coverW, coverH);
+      }
+
+      ctx.save();
+      if (vibe === 'cherrypop') {
+        const cherryGrad = ctx.createRadialGradient(cw / 2, ch / 2, cw * 0.1, cw / 2, ch / 2, ch * 0.75);
+        cherryGrad.addColorStop(0, 'rgba(255, 240, 245, 0.12)');
+        cherryGrad.addColorStop(1, 'rgba(244, 114, 182, 0.18)');
+        ctx.fillStyle = cherryGrad;
+        ctx.fillRect(0, 0, cw, ch);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        for (let i = 0; i < 10; i++) {
+          const sx = (Math.sin(i * 37 + timeSec * 0.9) * 0.5 + 0.5) * cw;
+          const sy = (Math.cos(i * 19 + timeSec * 0.5) * 0.5 + 0.5) * ch;
+          ctx.beginPath();
+          ctx.arc(sx, sy, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      else if (vibe === 'golden') {
+        const grad = ctx.createLinearGradient(0, 0, cw, ch);
+        grad.addColorStop(0, 'rgba(253, 224, 71, 0.18)');
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0.08)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      else if (vibe === 'film90s') {
+        ctx.fillStyle = 'rgba(180, 83, 9, 0.08)';
+        ctx.fillRect(0, 0, cw, ch);
+        ctx.font = '700 18px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.9)';
+        ctx.textAlign = 'right';
+        ctx.fillText("'26  10  14", cw - 28, ch - 65);
+      }
+      else if (vibe === 'runway') {
+        const noir = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.25, cw / 2, ch / 2, ch * 0.8);
+        noir.addColorStop(0, 'transparent');
+        noir.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
+        ctx.fillStyle = noir;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      ctx.restore();
+
+      drawGirlyBadge(ctx, 30, 85, '🎀 SISTER KIKI');
+      ctx.font = '700 16px "JetBrains Mono", monospace';
+      ctx.fillStyle = '#db2777';
+      ctx.textAlign = 'right';
+      ctx.fillText("'26 10 14 🎀", cw - 30, 95);
+
+      if (hookText && hookText.trim().length > 0 && timeSec < 2.5) {
+        ctx.save();
+        const alpha = (timeSec < 2.0) ? 1.0 : Math.max(0, 1.0 - ((timeSec - 2.0) / 0.5));
+        ctx.globalAlpha = alpha;
+
+        const textY = ch * 0.35;
+        ctx.font = 'italic 700 28px "Playfair Display", serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const metrics = ctx.measureText(hookText);
+        const boxW = metrics.width + 48;
+        const boxH = 52;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+        ctx.shadowColor = 'rgba(244, 114, 182, 0.35)';
+        ctx.shadowBlur = 16;
+        ctx.beginPath();
+        ctx.roundRect((cw - boxW) / 2, textY - (boxH / 2), boxW, boxH, 26);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+
+        ctx.strokeStyle = '#f472b6';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#4a1525';
+        ctx.fillText(hookText, cw / 2, textY);
+        ctx.restore();
+      }
+    }
+
+    function drawGirlyBadge(ctx, x, y, label) {
+      ctx.save();
+      ctx.font = '600 12px "JetBrains Mono", monospace';
+      const m = ctx.measureText(label);
+      const w = m.width + 24;
+      const h = 28;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.shadowColor = 'rgba(251, 207, 232, 0.4)';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.roundRect(x, y - 18, w, h, 14);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+
+      ctx.strokeStyle = '#fbcfe8';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#db2777';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, x + 12, y + 1);
+      ctx.restore();
+    }
+
+    function startPreviewLoop() {
+      if (previewLoopReq) cancelAnimationFrame(previewLoopReq);
+      const startTime = performance.now();
+
+      function loop(now) {
+        const elapsed = (now - startTime) / 1000;
+        const totalDuration = 6.0;
+
+        renderCanvasFrame(
+          prevCtx,
+          540,
+          960,
+          elapsed % totalDuration,
+          totalDuration,
+          activeLayout,
+          selectedVibe,
+          hookTextInput.value
+        );
+
+        previewLoopReq = requestAnimationFrame(loop);
+      }
+      previewLoopReq = requestAnimationFrame(loop);
+    }
+    startPreviewLoop();
+
+    /* =========================================================================
+       AUDIO & BEAT SYNTHESIS ENGINE
+       ========================================================================= */
+    function initAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    }
+
+    function createLoFiFashionBeatBuffer(durationSec = 6.0) {
+      initAudioContext();
+      const sampleRate = audioContext.sampleRate;
+      const length = Math.floor(sampleRate * durationSec);
+      const buffer = audioContext.createBuffer(2, length, sampleRate);
+      const left = buffer.getChannelData(0);
+      const right = buffer.getChannelData(1);
+
+      const chordProg = [
+        [174.61, 220.00, 261.63, 329.63],
+        [196.00, 246.94, 293.66, 329.63],
+        [164.81, 196.00, 246.94, 293.66],
+        [220.00, 261.63, 329.63, 392.00]
+      ];
+
+      const beatDuration = durationSec / 4;
+
+      for (let i = 0; i < length; i++) {
+        const time = i / sampleRate;
+        const chordIndex = Math.min(3, Math.floor(time / beatDuration));
+        const chord = chordProg[chordIndex];
+        const chordTime = time % beatDuration;
+
+        let sampleVal = 0;
+        for (let f = 0; f < chord.length; f++) {
+          const freq = chord[f];
+          const env = Math.exp(-chordTime * 0.85);
+          sampleVal += Math.sin(2 * Math.PI * freq * time) * 0.08 * env;
+        }
+
+        const kickTime = chordTime % 0.5;
+        if (kickTime < 0.1) {
+          const kickFreq = 80 * Math.exp(-kickTime * 35);
+          sampleVal += Math.sin(2 * Math.PI * kickFreq * kickTime) * 0.12;
+        }
+
+        const vinylWarmth = (Math.random() * 2 - 1) * 0.003;
+        left[i] = sampleVal + vinylWarmth;
+        right[i] = sampleVal * 0.96 + vinylWarmth;
+      }
+
+      return buffer;
+    }
+
+    function toggleBeatPreview() {
+      initAudioContext();
+      const btn = document.getElementById('btn-voice-beat');
+
+      if (!isBeatPlaying) {
+        const beatBuf = createLoFiFashionBeatBuffer(12.0);
+        beatSourceNode = audioContext.createBufferSource();
+        beatSourceNode.buffer = beatBuf;
+        beatSourceNode.loop = true;
+        beatSourceNode.connect(audioContext.destination);
+        beatSourceNode.start();
+        isBeatPlaying = true;
+        if (btn) btn.innerText = 'Stop Beat';
+        showToast('Playing Strawberry Beat 🎀', '🎵');
+      } else {
+        if (beatSourceNode) beatSourceNode.stop();
+        isBeatPlaying = false;
+        if (btn) btn.innerText = 'Play Beat';
+      }
+    }
+
+    /* Voice Studio Recording & Silence Cutter */
+    const btnVoiceRecord = document.getElementById('btn-voice-studio-record');
+    const voiceTimer = document.getElementById('voice-studio-timer');
+    const voiceStatus = document.getElementById('voice-studio-status');
+    const voiceMicIcon = document.getElementById('voice-studio-mic-icon');
+    const voiceSilenceStats = document.getElementById('voice-studio-silence-stats');
+    const voiceCanvas = document.getElementById('voice-studio-canvas');
+    const voiceCtx = voiceCanvas.getContext('2d');
+
+    btnVoiceRecord.addEventListener('click', async () => {
+      initAudioContext();
+      if (!isRecording) {
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          startVoiceWaveform(micStream);
+
+          audioChunks = [];
+          mediaRecorder = new MediaRecorder(micStream);
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            const rawAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const arrayBuffer = await rawAudioBlob.arrayBuffer();
+            userAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            detectDeadAirSilence();
+            showToast('Voice memo saved & silence trimmed! 🎙️', '🎀');
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          recordStartTime = performance.now();
+          voiceMicIcon.className = 'ph-fill ph-stop';
+          voiceStatus.innerText = 'Recording... Tap to stop';
+
+          recordTimerInterval = setInterval(() => {
+            const elapsed = Math.floor((performance.now() - recordStartTime) / 1000);
+            const m = Math.floor(elapsed / 60);
+            const s = elapsed % 60;
+            voiceTimer.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+          }, 500);
+
+        } catch (err) {
+          console.error(err);
+          showToast('Mic permission required to record.', '⚠️');
+        }
+      } else {
+        isRecording = false;
+        clearInterval(recordTimerInterval);
+        mediaRecorder.stop();
+        if (micStream) micStream.getTracks().forEach(t => t.stop());
+        cancelAnimationFrame(micAnimId);
+        voiceMicIcon.className = 'ph-fill ph-microphone';
+        voiceStatus.innerText = 'Recording saved! Tap to re-record';
+      }
+    });
+
+    function startVoiceWaveform(stream) {
+      initAudioContext();
+      const source = audioContext.createMediaStreamSource(stream);
+      micAnalyser = audioContext.createAnalyser();
+      micAnalyser.fftSize = 64;
+      source.connect(micAnalyser);
+
+      const bufferLength = micAnalyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        micAnimId = requestAnimationFrame(draw);
+        micAnalyser.getByteFrequencyData(dataArray);
+
+        const w = voiceCanvas.width = voiceCanvas.clientWidth;
+        const h = voiceCanvas.height = voiceCanvas.clientHeight;
+        voiceCtx.clearRect(0, 0, w, h);
+
+        const barWidth = (w / bufferLength) * 1.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * h;
+          voiceCtx.fillStyle = '#f472b6';
+          voiceCtx.fillRect(x, h - barHeight, barWidth - 1, barHeight);
+          x += barWidth;
+        }
+      }
+      draw();
+    }
+
+    function detectDeadAirSilence() {
+      if (!userAudioBuffer) return;
+      const channelData = userAudioBuffer.getChannelData(0);
+      const sampleRate = userAudioBuffer.sampleRate;
+      const threshold = 0.025;
+      const winSize = Math.floor(sampleRate * 0.05);
+      const totalWindows = Math.floor(channelData.length / winSize);
+
+      let inSilence = false;
+      let silenceStart = 0;
+      detectedSilences = [];
+
+      for (let w = 0; w < totalWindows; w++) {
+        let sumSq = 0;
+        for (let i = 0; i < winSize; i++) {
+          const s = channelData[w * winSize + i];
+          sumSq += s * s;
+        }
+        const rms = Math.sqrt(sumSq / winSize);
+        const curTime = (w * winSize) / sampleRate;
+
+        if (rms < threshold) {
+          if (!inSilence) {
+            inSilence = true;
+            silenceStart = curTime;
+          }
+        } else {
+          if (inSilence) {
+            inSilence = false;
+            const dur = curTime - silenceStart;
+            if (dur > 0.4) {
+              detectedSilences.push({ start: silenceStart + 0.05, end: curTime - 0.05 });
+            }
+          }
+        }
+      }
+
+      let totalSaved = 0;
+      detectedSilences.forEach(s => totalSaved += (s.end - s.start));
+      voiceSilenceStats.innerText = `${detectedSilences.length} pauses (${totalSaved.toFixed(1)}s) cut ✨`;
+    }
+
+    /* Video Export Engine */
+    const renderCard = document.getElementById('render-progress-card');
+    const renderBar = document.getElementById('render-bar');
+    const renderPct = document.getElementById('render-pct');
+    const renderStatusText = document.getElementById('render-status-text');
+    const finalVideoPlayer = document.getElementById('final-video-player');
+    const btnStartRender = document.getElementById('btn-start-render');
+    const btnDownloadVideo = document.getElementById('btn-download-video');
+
+    async function renderFinalVideo() {
+      if (uploadedImages.length === 0) {
+        showToast('Please upload photos first.', '⚠️');
+        return;
+      }
+
+      btnStartRender.classList.add('opacity-50', 'pointer-events-none');
+      renderCard.classList.remove('hidden');
+      renderBar.style.width = '0%';
+      renderPct.innerText = '0%';
+      renderStatusText.innerText = 'Preparing 9:16 Video Stream...';
+      showToast('Rendering video for Kiki... 🎀', '🎀');
+
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = 720;
+      exportCanvas.height = 1280;
+      const exportCtx = exportCanvas.getContext('2d');
+
+      let totalDuration = 6.0;
+      let chosenAudioBuffer = null;
+
+      initAudioContext();
+
+      if (userAudioBuffer) {
+        chosenAudioBuffer = userAudioBuffer;
+        totalDuration = userAudioBuffer.duration;
+        if (detectedSilences.length > 0) {
+          let trimmedAway = 0;
+          detectedSilences.forEach(s => trimmedAway += (s.end - s.start));
+          totalDuration = Math.max(2.5, totalDuration - trimmedAway);
+        }
+      } else {
+        chosenAudioBuffer = createLoFiFashionBeatBuffer(totalDuration);
+      }
+
+      const dest = audioContext.createMediaStreamDestination();
+      if (chosenAudioBuffer) {
+        const audioSrc = audioContext.createBufferSource();
+        audioSrc.buffer = chosenAudioBuffer;
+
+        const compressor = audioContext.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-24, audioContext.currentTime);
+        compressor.knee.setValueAtTime(30, audioContext.currentTime);
+        compressor.ratio.setValueAtTime(12, audioContext.currentTime);
+
+        audioSrc.connect(compressor);
+        compressor.connect(dest);
+        compressor.connect(audioContext.destination);
+        audioSrc.start();
+      }
+
+      const fps = 30;
+      const canvasStream = exportCanvas.captureStream(fps);
+      const combinedTracks = [
+        ...canvasStream.getVideoTracks(),
+        ...dest.stream.getAudioTracks()
+      ];
+      const combinedStream = new MediaStream(combinedTracks);
+
+      let mimeType = 'video/webm;codecs=vp9,opus';
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = 'video/webm';
+      }
+
+      const recorder = new MediaRecorder(combinedStream, {
+        mimeType: mimeType,
+        videoBitsPerSecond: 6000000
+      });
+
+      const recordedChunks = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+        const videoUrl = URL.createObjectURL(videoBlob);
+
+        finalVideoPlayer.src = videoUrl;
+        finalVideoPlayer.classList.remove('hidden');
+        previewCanvas.classList.add('hidden');
+        renderCard.classList.add('hidden');
+        btnStartRender.classList.remove('opacity-50', 'pointer-events-none');
+
+        btnDownloadVideo.href = videoUrl;
+        btnDownloadVideo.download = `SisterKiki-${Date.now()}.webm`;
+        btnDownloadVideo.classList.remove('hidden');
+
+        showToast('Video ready! Save to camera roll 🎀', '💖');
+        finalVideoPlayer.play();
+      };
+
+      recorder.start();
+
+      const totalMs = totalDuration * 1000;
+      const startTime = performance.now();
+
+      function stepRender(now) {
+        const elapsedMs = now - startTime;
+        const progress = Math.min(1.0, elapsedMs / totalMs);
+        const curSec = progress * totalDuration;
+
+        renderCanvasFrame(
+          exportCtx,
+          720,
+          1280,
+          curSec,
+          totalDuration,
+          activeLayout,
+          selectedVibe,
+          hookTextInput.value
+        );
+
+        const pct = Math.floor(progress * 100);
+        renderBar.style.width = `${pct}%`;
+        renderPct.innerText = `${pct}%`;
+        renderStatusText.innerText = `Assembling frames (${pct}%)...`;
+
+        if (progress < 1.0) {
+          requestAnimationFrame(stepRender);
+        } else {
+          recorder.stop();
+        }
+      }
+
+      requestAnimationFrame(stepRender);
+    }
+
+    /* =========================================================================
+       TOOL 4: 📜 SCRIPT TELEPROMPTER LOGIC
+       ========================================================================= */
+    const prompterBox = document.getElementById('prompter-box');
+    const prompterContent = document.getElementById('prompter-content');
+    const prompterSpeedInput = document.getElementById('prompter-speed');
+    const scriptPad = document.getElementById('script-pad');
+
+    scriptPad.value = localStorage.getItem('kiki_saved_script') || prompterContent.innerText.replace(/"/g, '');
+
+    scriptPad.addEventListener('input', () => {
+      prompterContent.innerText = `"${scriptPad.value}"`;
+      localStorage.setItem('kiki_saved_script', scriptPad.value);
+    });
+
+    function togglePrompterScroll() {
+      isPrompterScrolling = !isPrompterScrolling;
+      const btnIcon = document.getElementById('prompter-btn-icon');
+      const btnLabel = document.getElementById('prompter-btn-label');
+
+      if (isPrompterScrolling) {
+        btnIcon.className = 'ph-bold ph-pause';
+        btnLabel.innerText = 'Pause';
+        const speed = parseInt(prompterSpeedInput.value, 10);
+        const scrollStep = speed * 1.2;
+
+        prompterInterval = setInterval(() => {
+          prompterBox.scrollTop += scrollStep;
+          if (prompterBox.scrollTop >= prompterBox.scrollHeight - prompterBox.clientHeight) {
+            togglePrompterScroll();
+          }
+        }, 30);
+      } else {
+        btnIcon.className = 'ph-bold ph-play';
+        btnLabel.innerText = 'Start Scrolling';
+        clearInterval(prompterInterval);
+      }
+    }
+
+    function resetPrompterScroll() {
+      if (isPrompterScrolling) togglePrompterScroll();
+      prompterBox.scrollTop = 0;
+    }
+
+    function loadPrompterHook(hookText) {
+      scriptPad.value = hookText;
+      prompterContent.innerText = `"${hookText}"`;
+      localStorage.setItem('kiki_saved_script', hookText);
+      resetPrompterScroll();
+      showToast('Hook loaded into prompter! 📜', '✨');
+    }
+
+    /* =========================================================================
+       TOOL 5: 🎨 COVER & THUMBNAIL DESIGNER LOGIC
+       ========================================================================= */
+    const coverCanvas = document.getElementById('cover-canvas');
+    const coverCtx = coverCanvas.getContext('2d');
+    const coverTitleInput = document.getElementById('cover-title-input');
+
+    coverTitleInput.addEventListener('input', renderCoverCanvas);
+
+    function setCoverBg(mode) {
+      coverBgMode = mode;
+      document.querySelectorAll('.cover-bg-btn').forEach(btn => {
+        if (btn.dataset.bg === mode) {
+          btn.className = 'cover-bg-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-bold text-pink-900';
+        } else {
+          btn.className = 'cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900';
+        }
+      });
+      renderCoverCanvas();
+    }
+
+    function toggleCoverSticker(stickerKey) {
+      coverStickers[stickerKey] = !coverStickers[stickerKey];
+      const btn = document.getElementById(`csticker-${stickerKey}`);
+      if (coverStickers[stickerKey]) {
+        btn.className = 'px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium';
+      } else {
+        btn.className = 'px-3.5 py-1.5 rounded-full border border-pink-200 bg-white text-pink-500 font-medium';
+      }
+      renderCoverCanvas();
+    }
+
+    function renderCoverCanvas() {
+      const cw = 540;
+      const ch = 960;
+      coverCtx.clearRect(0, 0, cw, ch);
+
+      if (coverBgMode === 'photo' && uploadedImages.length > 0) {
+        const img = uploadedImages[0];
+        const scale = Math.max(cw / img.width, ch / img.height);
+        coverCtx.drawImage(img, (cw - img.width * scale) / 2, (ch - img.height * scale) / 2, img.width * scale, img.height * scale);
+        const scrim = coverCtx.createLinearGradient(0, 0, 0, ch);
+        scrim.addColorStop(0, 'rgba(255, 245, 248, 0.4)');
+        scrim.addColorStop(0.5, 'rgba(255, 245, 248, 0.2)');
+        scrim.addColorStop(1, 'rgba(74, 21, 37, 0.6)');
+        coverCtx.fillStyle = scrim;
+        coverCtx.fillRect(0, 0, cw, ch);
+      } else if (coverBgMode === 'sunset') {
+        const grad = coverCtx.createLinearGradient(0, 0, 0, ch);
+        grad.addColorStop(0, '#fed7aa');
+        grad.addColorStop(1, '#f472b6');
+        coverCtx.fillStyle = grad;
+        coverCtx.fillRect(0, 0, cw, ch);
+      } else if (coverBgMode === 'lilac') {
+        const grad = coverCtx.createLinearGradient(0, 0, 0, ch);
+        grad.addColorStop(0, '#f5d0fe');
+        grad.addColorStop(1, '#fbcfe8');
+        coverCtx.fillStyle = grad;
+        coverCtx.fillRect(0, 0, cw, ch);
+      } else {
+        const grad = coverCtx.createLinearGradient(0, 0, 0, ch);
+        grad.addColorStop(0, '#fff0f5');
+        grad.addColorStop(1, '#fbcfe8');
+        coverCtx.fillStyle = grad;
+        coverCtx.fillRect(0, 0, cw, ch);
+      }
+
+      coverCtx.strokeStyle = '#ffffff';
+      coverCtx.lineWidth = 6;
+      coverCtx.strokeRect(30, 30, cw - 60, ch - 60);
+
+      if (coverStickers.tape) {
+        coverCtx.fillStyle = 'rgba(244, 114, 182, 0.7)';
+        coverCtx.fillRect(cw / 2 - 80, 20, 160, 24);
+      }
+
+      if (coverStickers.bow) {
+        coverCtx.font = '64px sans-serif';
+        coverCtx.textAlign = 'center';
+        coverCtx.fillText('🎀', cw / 2, 280);
+      }
+
+      const titleText = (coverTitleInput.value || 'TIKTOK COVER').toUpperCase();
+      coverCtx.font = 'bold 42px "Playfair Display", serif';
+      coverCtx.textAlign = 'center';
+
+      const metrics = coverCtx.measureText(titleText);
+      const boxW = Math.min(cw - 80, metrics.width + 48);
+      const boxH = 74;
+      const boxY = 440;
+
+      coverCtx.fillStyle = '#ffffff';
+      coverCtx.shadowColor = 'rgba(244, 114, 182, 0.4)';
+      coverCtx.shadowBlur = 20;
+      coverCtx.beginPath();
+      coverCtx.roundRect((cw - boxW) / 2, boxY, boxW, boxH, 20);
+      coverCtx.fill();
+      coverCtx.shadowColor = 'transparent';
+
+      coverCtx.strokeStyle = '#f472b6';
+      coverCtx.lineWidth = 2.5;
+      coverCtx.stroke();
+
+      coverCtx.fillStyle = '#4a1525';
+      coverCtx.fillText(titleText, cw / 2, boxY + 50);
+
+      if (coverStickers.sparkle) {
+        coverCtx.font = '36px sans-serif';
+        coverCtx.fillText('✨', cw / 2 - (boxW / 2) - 30, boxY + 45);
+        coverCtx.fillText('✨', cw / 2 + (boxW / 2) + 30, boxY + 45);
+      }
+
+      if (coverStickers.kiki) {
+        coverCtx.fillStyle = '#ffffff';
+        coverCtx.font = '700 18px "JetBrains Mono", monospace';
+        coverCtx.fillText('SISTER KIKI STUDIO · TIKTOK EDIT 🌸', cw / 2, ch - 80);
+      }
+    }
+
+    function downloadCoverImage() {
+      const link = document.createElement('a');
+      link.download = `SisterKiki-Cover-${Date.now()}.png`;
+      link.href = coverCanvas.toDataURL('image/png');
+      link.click();
+      showToast('Cover saved to phone! 🎀', '💖');
+    }
+
+    window.onload = function() {
+      renderCoverCanvas();
+      showToast('Welcome to Sister Kiki Studio 🎀', '✨');
+    };
+  </script>
+</body>
+</html>
