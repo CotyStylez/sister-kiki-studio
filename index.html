@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Sister Kiki">
-  <title>Sister Kiki Creator Studio 🎀 — Simple & Powerful TikTok Suite</title>
-  <meta name="description" content="Kiki's all-in-one TikTok creator suite: Video Maker, Insider Photo Editor, Voice Studio with dead-air silence trimmer, Script Teleprompter, and Cover Designer.">
-  <meta property="og:title" content="Sister Kiki Creator Studio 🎀 — Simple & Powerful TikTok Suite">
-  <meta property="og:description" content="Kiki's all-in-one TikTok creator suite: Video Maker, Insider Photo Editor, Voice Studio with dead-air silence trimmer, Script Teleprompter, and Cover Designer.">
+  <title>Sister Kiki 潮流创作工坊 🎀 — 专为 TikTok 打造的极简全能创作套件</title>
+  <meta name="description" content="Kiki 专属全能 TikTok 创作套件：9:16 视频剪辑、大牌质感修图、AI 智能去停顿录音棚、灵感提词器与封面设计器。">
+  <meta property="og:title" content="Sister Kiki 潮流创作工坊 🎀 — 专为 TikTok 打造的极简全能创作套件">
+  <meta property="og:description" content="Kiki 专属全能 TikTok 创作套件：9:16 视频剪辑、大牌质感修图、AI 智能去停顿录音棚、灵感提词器与封面设计器。">
   <meta property="og:type" content="website">
 
   <!-- Tailwind CSS CDN -->
@@ -103,16 +103,22 @@
       </div>
       <div>
         <h1 class="text-sm font-bold font-serif tracking-wide text-pink-950 flex items-center gap-1">
-          Sister Kiki <span class="text-[11px] font-sans font-medium text-pink-500 tracking-normal">Creator Studio ✨</span>
+          Sister Kiki <span class="text-[11px] font-sans font-medium text-pink-500 tracking-normal">创作工坊 ✨</span>
         </h1>
-        <p class="text-[10px] text-pink-700 font-sans -mt-0.5" id="active-tool-subtitle">Tool: 🎬 Video Maker</p>
+        <p class="text-[10px] text-pink-700 font-sans -mt-0.5" id="active-tool-subtitle">当前工具: 🎬 视频制作</p>
       </div>
     </div>
 
     <div class="flex items-center gap-2">
-      <button onclick="resetCurrentTool()" title="Reset Tool" class="h-8 px-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-semibold text-pink-700 flex items-center gap-1 shadow-xs transition active:scale-95">
+      <!-- 语言切换 / Language Switcher -->
+      <button onclick="toggleLanguage()" id="lang-toggle-btn" title="切换语言 / Switch Language" class="h-8 px-2.5 rounded-full bg-pink-100 hover:bg-pink-200 border border-pink-300 text-xs font-bold text-pink-800 flex items-center gap-1 shadow-xs transition active:scale-95">
+        <span class="text-xs">🌐</span>
+        <span id="lang-toggle-text">中文</span>
+      </button>
+
+      <button onclick="resetCurrentTool()" title="重置当前工具" class="h-8 px-2.5 rounded-full bg-white hover:bg-pink-50 border border-pink-200 text-xs font-semibold text-pink-700 flex items-center gap-1 shadow-xs transition active:scale-95">
         <i class="ph-bold ph-arrow-counter-clockwise text-xs"></i>
-        <span>Reset</span>
+        <span id="header-reset-label">重置</span>
       </button>
     </div>
   </header>
@@ -120,7 +126,7 @@
   <!-- NOTIFICATION TOAST -->
   <div id="toast" class="fixed top-14 inset-x-4 z-50 mx-auto max-w-sm hidden bg-white/95 border border-pink-300 text-pink-950 px-4 py-2.5 rounded-2xl shadow-xl shadow-pink-200/60 backdrop-blur-md flex items-center gap-2.5 transition-all duration-300">
     <div id="toast-icon" class="text-base">🎀</div>
-    <div class="text-xs font-medium text-pink-900" id="toast-message">Kiki's Studio is ready ✨</div>
+    <div class="text-xs font-medium text-pink-900" id="toast-message">Kiki 的专属创作工坊已就绪 ✨</div>
   </div>
 
   <!-- MAIN WORKSPACE -->
@@ -135,9 +141,9 @@
         <!-- Controls Column -->
         <div class="lg:col-span-7 space-y-4">
           <div class="space-y-1">
-            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 01 · Video Montage</span>
-            <h2 class="text-2xl font-bold font-serif text-pink-950">Make a 9:16 TikTok Video</h2>
-            <p class="text-xs text-pink-800">Add photos, pick a cute look, and export a ready-to-post vertical video with music.</p>
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">工具 01 · 9:16 视频剪辑</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">制作 9:16 竖屏 TikTok 视频</h2>
+            <p class="text-xs text-pink-800">添加照片，自选氛围滤镜与排版，一键导出带音乐的专属高级感竖屏视频。</p>
           </div>
 
           <!-- Photo Drop Zone -->
@@ -148,8 +154,8 @@
                 <i class="ph-fill ph-camera-plus"></i>
               </div>
               <div>
-                <span class="text-xs font-bold text-pink-950 block">Tap to Pick 2–6 Photos 📸</span>
-                <span class="text-[10px] text-pink-600">Wide or square photos auto-fit cleanly to 9:16!</span>
+                <span class="text-xs font-bold text-pink-950 block">轻点选择 2–6 张照片 📸</span>
+                <span class="text-[10px] text-pink-600">横屏、竖屏或方图均会自动适配 9:16 黄金比例！</span>
               </div>
             </div>
           </label>
@@ -157,8 +163,8 @@
           <!-- Thumbnails Strip -->
           <div id="thumb-preview-wrap" class="hidden space-y-1.5">
             <div class="flex items-center justify-between text-xs text-pink-800 font-medium">
-              <span id="photo-count-label">0 photos loaded</span>
-              <span class="text-[10px] text-pink-500">Tap ✕ to remove</span>
+              <span id="photo-count-label">0 张照片已就绪</span>
+              <span class="text-[10px] text-pink-500">轻点 ✕ 移除</span>
             </div>
             <div id="thumbnail-strip" class="flex gap-2 overflow-x-auto pb-1.5 pt-0.5"></div>
           </div>
@@ -166,32 +172,32 @@
           <!-- Sample Fits Loader -->
           <div class="text-center">
             <button onclick="loadSampleFashionLooks()" class="text-xs text-pink-600 hover:text-pink-800 underline decoration-pink-300 font-semibold transition">
-              ✨ Or tap here to load 4 aesthetic sample looks for Kiki
+              ✨ 或轻点此处载入 4 套草莓甜心氛围穿搭
             </button>
           </div>
 
           <!-- 4 Simple Layout Choices -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-pink-950">Photo Layout:</span>
-              <span id="active-layout-name" class="font-serif italic text-pink-600 font-medium">Dreamy Bokeh Wings</span>
+              <span class="font-bold text-pink-950">照片排版:</span>
+              <span id="active-layout-name" class="font-serif italic text-pink-600 font-medium">梦幻柔焦羽翼 🌸</span>
             </div>
             <div class="grid grid-cols-2 gap-2">
               <button onclick="selectLayout('bokeh')" class="layout-btn active p-2.5 rounded-2xl border text-left bg-pink-100/90 border-pink-400 shadow-xs transition" data-layout="bokeh">
-                <div class="text-xs font-bold text-pink-950 font-serif">Dreamy Bokeh 🌸</div>
-                <div class="text-[10px] text-pink-700">Soft blurred wings</div>
+                <div class="text-xs font-bold text-pink-950 font-serif">梦幻柔焦 🌸</div>
+                <div class="text-[10px] text-pink-700">羽化虚化背景</div>
               </button>
               <button onclick="selectLayout('polaroid')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="polaroid">
-                <div class="text-xs font-bold text-pink-950 font-serif">Polaroid Chic 📸</div>
-                <div class="text-[10px] text-pink-700">Cute frame & tape</div>
+                <div class="text-xs font-bold text-pink-950 font-serif">时髦拍立得 📸</div>
+                <div class="text-[10px] text-pink-700">立体相纸胶带</div>
               </button>
               <button onclick="selectLayout('split')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="split">
-                <div class="text-xs font-bold text-pink-950 font-serif">Editorial Split 🎀</div>
-                <div class="text-[10px] text-pink-700">Two-photo magazine</div>
+                <div class="text-xs font-bold text-pink-950 font-serif">时装双拼 🎀</div>
+                <div class="text-[10px] text-pink-700">双图画报排版</div>
               </button>
               <button onclick="selectLayout('drift')" class="layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition" data-layout="drift">
-                <div class="text-xs font-bold text-pink-950 font-serif">Kinetic Drift ✨</div>
-                <div class="text-[10px] text-pink-700">Slow smooth zoom</div>
+                <div class="text-xs font-bold text-pink-950 font-serif">电影推拉 ✨</div>
+                <div class="text-[10px] text-pink-700">平滑慢镜头缩放</div>
               </button>
             </div>
           </div>
@@ -199,33 +205,33 @@
           <!-- Visual Vibe Filter -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-pink-950">Aesthetic Vibe:</span>
-              <span id="active-vibe-name" class="font-serif italic text-pink-600 font-semibold">Strawberry Milk 🍓</span>
+              <span class="font-bold text-pink-950">氛围滤镜:</span>
+              <span id="active-vibe-name" class="font-serif italic text-pink-600 font-semibold">草莓甜心 🍓</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
               <button onclick="selectVibe('cherrypop')" class="vibe-btn active p-2 rounded-xl border text-left bg-pink-100/90 border-pink-400 text-xs font-bold text-pink-950 transition" data-vibe="cherrypop">
-                🍓 Strawberry
+                🍓 草莓甜心
               </button>
               <button onclick="selectVibe('cleangirl')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="cleangirl">
-                ✨ Clean Girl
+                ✨ 清透氧气
               </button>
               <button onclick="selectVibe('parisian')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="parisian">
-                🌹 Parisian
+                🌹 巴黎玫瑰
               </button>
               <button onclick="selectVibe('golden')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="golden">
-                ☀️ Golden Hour
+                ☀️ 黄金日落
               </button>
               <button onclick="selectVibe('film90s')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="film90s">
-                🎞️ 90s Film
+                🎞️ 90s 胶片
               </button>
               <button onclick="selectVibe('runway')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="runway">
-                📸 Runway
+                📸 秀场直闪
               </button>
               <button onclick="selectVibe('sunset')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="sunset">
-                🍑 Sunset
+                🍑 蜜桃晚霞
               </button>
               <button onclick="selectVibe('moody')" class="vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition" data-vibe="moody">
-                🍃 Moody
+                🍃 复古冷橄
               </button>
             </div>
           </div>
@@ -233,12 +239,12 @@
           <!-- Video Hook Caption -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-1.5 shadow-xs">
             <div class="flex items-center justify-between text-xs">
-              <label class="font-bold text-pink-950">Opening Hook Caption:</label>
+              <label class="font-bold text-pink-950">视频吸睛开场台词:</label>
               <button onclick="shuffleHookPrompt()" class="text-pink-600 hover:text-pink-800 flex items-center gap-1 font-semibold">
-                <i class="ph-bold ph-shuffle"></i>Shuffle Idea 🎀
+                <i class="ph-bold ph-shuffle"></i>随机灵感 🎀
               </button>
             </div>
-            <input type="text" id="hook-text-input" value="fit check with my favorite pieces ✨" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2 text-xs text-pink-950 placeholder-pink-400 focus:outline-none focus:border-pink-500 font-medium">
+            <input type="text" id="hook-text-input" value="今日份心动穿搭，每件都是本命 ✨" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2 text-xs text-pink-950 placeholder-pink-400 focus:outline-none focus:border-pink-500 font-medium">
           </div>
 
           <!-- Render Progress -->
@@ -246,7 +252,7 @@
             <div class="flex items-center justify-between text-xs font-mono">
               <span class="text-pink-700 font-bold flex items-center gap-1">
                 <span class="animate-spin">🎀</span>
-                <span id="render-status-text">Assembling 9:16 Video...</span>
+                <span id="render-status-text">正在合成 9:16 视频画面...</span>
               </span>
               <span id="render-pct" class="text-pink-900 font-bold">0%</span>
             </div>
@@ -259,11 +265,11 @@
           <div class="space-y-2 pt-1">
             <button id="btn-start-render" onclick="renderFinalVideo()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
               <span>🎀</span>
-              <span>Make My TikTok Video ✨</span>
+              <span>生成我的 TikTok 视频 ✨</span>
             </button>
             <a id="btn-download-video" class="hidden w-full py-4 rounded-3xl bg-white hover:bg-pink-50 border-2 border-pink-400 text-pink-800 font-serif font-bold text-base transition flex items-center justify-center gap-2 shadow-md">
               <i class="ph-bold ph-download-simple text-lg text-pink-600"></i>
-              <span>Save Video to Phone (Camera Roll) 🎀</span>
+              <span>保存视频至手机相册 🎀</span>
             </a>
           </div>
         </div>
@@ -271,9 +277,9 @@
         <!-- Live 9:16 Preview Canvas -->
         <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
           <div class="flex items-center justify-between w-full max-w-[270px] px-1 text-xs">
-            <span class="font-bold text-pink-950 font-serif">Live 9:16 Preview</span>
+            <span class="font-bold text-pink-950 font-serif">9:16 实时预览</span>
             <button onclick="toggleSafeZone()" id="btn-toggle-safe-zone" class="px-2.5 py-0.5 rounded-full bg-white border border-pink-300 text-[10px] text-pink-700 hover:text-pink-900 shadow-xs transition">
-              <span id="safe-zone-btn-text">Safe Zone: Off</span>
+              <span id="safe-zone-btn-text">安全区: 关闭</span>
             </button>
           </div>
 
@@ -285,8 +291,8 @@
               <div class="w-14 h-14 rounded-3xl bg-pink-100 border border-pink-300 text-pink-500 flex items-center justify-center text-2xl mb-2 shadow-xs">
                 🎀
               </div>
-              <p class="text-xs font-bold text-pink-950">Add photos to preview</p>
-              <p class="text-[10px] text-pink-600 mt-0.5">Pick photos or load sample looks above!</p>
+              <p class="text-xs font-bold text-pink-950">添加照片查看预览</p>
+              <p class="text-[10px] text-pink-600 mt-0.5">轻点上方选择照片或载入示例穿搭！</p>
             </div>
 
             <!-- TikTok Safe Zone Overlays -->
@@ -298,15 +304,15 @@
                 <div class="w-7 h-7 rounded-full bg-black/40 border border-white/50 flex items-center justify-center text-[10px]">↗️</div>
               </div>
               <div class="absolute bottom-2.5 left-2 right-12 h-12 bg-black/35 rounded-xl border border-white/30 flex flex-col justify-center px-2">
-                <span class="text-[8px] font-semibold text-white">@sisterkiki · 1h ago</span>
-                <span class="text-[7px] font-sans text-white/80">TikTok Captions & Sound Bar Area</span>
+                <span class="text-[8px] font-semibold text-white">@sisterkiki · 1小时前</span>
+                <span class="text-[7px] font-sans text-white/80">TikTok 文案与音乐安全区</span>
               </div>
               <div class="absolute top-2.5 inset-x-0 text-center">
-                <span class="text-[8px] font-mono text-white bg-black/50 px-2 py-0.5 rounded-full border border-white/30">TikTok Safe Zone Active 🎀</span>
+                <span class="text-[8px] font-mono text-white bg-black/50 px-2 py-0.5 rounded-full border border-white/30">TikTok 界面安全区生效中 🎀</span>
               </div>
             </div>
           </div>
-          <p class="text-[10px] text-pink-400 font-medium text-center">Vertical 9:16 Canvas · 720x1280</p>
+          <p class="text-[10px] text-pink-400 font-medium text-center">竖屏 9:16 画布 · 720x1280</p>
         </div>
 
       </div>
@@ -321,9 +327,9 @@
         <!-- Controls Column -->
         <div class="lg:col-span-7 space-y-4">
           <div class="space-y-1">
-            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 02 · Insider Photo Studio</span>
-            <h2 class="text-2xl font-bold font-serif text-pink-950">Celebrity Editorial Retouch</h2>
-            <p class="text-xs text-pink-800">The secrets top creative directors and celebrity retouchers use—distilled into 1-tap tools.</p>
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">工具 02 · 顶流修图暗房</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">大牌明星画报质感修图</h2>
+            <p class="text-xs text-pink-800">顶尖创意总监与修图大师的私藏调色配方——化繁为简，一键触达。</p>
           </div>
 
           <!-- Photo Picker Drop Zone -->
@@ -332,29 +338,29 @@
               <input type="file" id="editor-photo-input" accept="image/*" class="hidden">
               <span class="text-xs font-bold text-pink-900 flex items-center justify-center gap-1.5">
                 <i class="ph-bold ph-image text-pink-500"></i>
-                <span>Choose Photo to Edit 📸</span>
+                <span>选择要修的照片 📸</span>
               </span>
             </label>
             <button onclick="loadEditorSamplePhoto()" class="px-3 py-3 rounded-2xl bg-pink-100 hover:bg-pink-200 border border-pink-300 text-xs font-bold text-pink-800 transition active:scale-95 whitespace-nowrap">
-              Load Sample ✨
+              载入大片示例 ✨
             </button>
           </div>
 
           <!-- Aspect Ratio Cropping Buttons -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-pink-950">Framing Ratio:</span>
-              <span id="active-crop-name" class="font-serif italic text-pink-600 font-medium">9:16 Vertical (TikTok)</span>
+              <span class="font-bold text-pink-950">构图画幅:</span>
+              <span id="active-crop-name" class="font-serif italic text-pink-600 font-medium">9:16 竖屏 (TikTok/抖音)</span>
             </div>
             <div class="grid grid-cols-3 gap-2 text-xs">
               <button onclick="setEditorRatio('9:16')" class="crop-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-bold text-pink-900 transition" data-ratio="9:16">
                 9:16 (TikTok)
               </button>
               <button onclick="setEditorRatio('4:5')" class="crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition" data-ratio="4:5">
-                4:5 (Portrait)
+                4:5 (人像/小红书)
               </button>
               <button onclick="setEditorRatio('1:1')" class="crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition" data-ratio="1:1">
-                1:1 (Square)
+                1:1 (正方形)
               </button>
             </div>
           </div>
@@ -362,45 +368,45 @@
           <!-- Insider Color Emulsion Presets -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-3.5 space-y-2 shadow-xs">
             <div class="flex items-center justify-between text-xs">
-              <span class="font-bold text-pink-950">Insider Emulsion LUT:</span>
-              <span id="active-emulsion-name" class="font-serif italic text-pink-600 font-semibold">Portra Warmth 🌸</span>
+              <span class="font-bold text-pink-950">大师级胶片色调配方:</span>
+              <span id="active-emulsion-name" class="font-serif italic text-pink-600 font-semibold">Portra 暖光 🌸</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-xs">
               <button onclick="setEmulsion('portra')" class="emulsion-btn active p-2.5 rounded-2xl border text-left bg-pink-100 border-pink-400 font-bold text-pink-900 transition" data-emulsion="portra">
-                🌸 Portra Warmth
-                <span class="block text-[10px] text-pink-700 font-normal">Creamy skin glow</span>
+                🌸 Portra 暖光
+                <span class="block text-[10px] text-pink-700 font-normal">奶油光泽透亮肌</span>
               </button>
               <button onclick="setEmulsion('flash')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="flash">
-                📸 Studio Flash
-                <span class="block text-[10px] text-pink-700 font-normal">Runway pop contrast</span>
+                📸 影棚直闪
+                <span class="block text-[10px] text-pink-700 font-normal">高街反差高级感</span>
               </button>
               <button onclick="setEmulsion('parisian')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="parisian">
-                🌹 Parisian Chic
-                <span class="block text-[10px] text-pink-700 font-normal">Muted quiet luxury</span>
+                🌹 巴黎风尚
+                <span class="block text-[10px] text-pink-700 font-normal">法式静奢低饱和</span>
               </button>
               <button onclick="setEmulsion('copenhagen')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="copenhagen">
-                ✨ Copenhagen
-                <span class="block text-[10px] text-pink-700 font-normal">Glass skin clarity</span>
+                ✨ 哥本哈根
+                <span class="block text-[10px] text-pink-700 font-normal">日光琉璃通透感</span>
               </button>
               <button onclick="setEmulsion('film90')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="film90">
-                🎞️ 90s Amber Film
-                <span class="block text-[10px] text-pink-700 font-normal">Analog nostalgia</span>
+                🎞️ 90s 琥珀胶片
+                <span class="block text-[10px] text-pink-700 font-normal">复古温暖胶片感</span>
               </button>
               <button onclick="setEmulsion('noir')" class="emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition" data-emulsion="noir">
-                🖤 Noir Velvet
-                <span class="block text-[10px] text-pink-700 font-normal">High fashion B&W</span>
+                🖤 丝绒黑白
+                <span class="block text-[10px] text-pink-700 font-normal">高级时装大片风</span>
               </button>
             </div>
           </div>
 
           <!-- Insider Lighting & Texture Levers (Sliders) -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-3.5 shadow-xs">
-            <span class="text-xs font-bold text-pink-950 block">Insider Lighting & Texture Levers:</span>
+            <span class="text-xs font-bold text-pink-950 block">质感光影与肌理调节:</span>
 
             <!-- Pro-Mist Glow Slider -->
             <div class="space-y-1">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-medium text-pink-900">✨ Pro-Mist Diffusion Glow</span>
+                <span class="font-medium text-pink-900">✨ Pro-Mist 电影柔焦光晕</span>
                 <span id="val-glow" class="font-mono text-pink-600 font-bold">40%</span>
               </div>
               <input type="range" id="slider-glow" min="0" max="100" value="40" class="w-full">
@@ -409,7 +415,7 @@
             <!-- Golden Warmth Slider -->
             <div class="space-y-1">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-medium text-pink-900">☀️ Golden Hour Warmth</span>
+                <span class="font-medium text-pink-900">☀️ 黄金时刻日落暖调</span>
                 <span id="val-warmth" class="font-mono text-pink-600 font-bold">+15%</span>
               </div>
               <input type="range" id="slider-warmth" min="-50" max="50" value="15" class="w-full">
@@ -418,7 +424,7 @@
             <!-- Film Grain Slider -->
             <div class="space-y-1">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-medium text-pink-900">🎞️ 35mm Organic Film Grain</span>
+                <span class="font-medium text-pink-900">🎞️ 35mm 真实胶片颗粒</span>
                 <span id="val-grain" class="font-mono text-pink-600 font-bold">25%</span>
               </div>
               <input type="range" id="slider-grain" min="0" max="100" value="25" class="w-full">
@@ -427,7 +433,7 @@
             <!-- Studio Contrast Slider -->
             <div class="space-y-1">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-medium text-pink-900">📸 Studio Punch Contrast</span>
+                <span class="font-medium text-pink-900">📸 秀场直出对比反差</span>
                 <span id="val-contrast" class="font-mono text-pink-600 font-bold">+10%</span>
               </div>
               <input type="range" id="slider-contrast" min="-30" max="50" value="10" class="w-full">
@@ -438,15 +444,15 @@
           <div class="space-y-2 pt-1">
             <button onclick="downloadEditedPhoto()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
               <i class="ph-bold ph-download-simple text-lg"></i>
-              <span>Save Photo to Camera Roll 🎀</span>
+              <span>保存高清照片至相册 🎀</span>
             </button>
 
             <div class="grid grid-cols-2 gap-2 text-xs">
               <button onclick="sendPhotoToVideo()" class="py-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-pink-800 font-bold shadow-xs transition active:scale-95 flex items-center justify-center gap-1">
-                <span>Send to Video Maker 🎬</span>
+                <span>一键送去剪辑视频 🎬</span>
               </button>
               <button onclick="sendPhotoToCover()" class="py-3 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-pink-800 font-bold shadow-xs transition active:scale-95 flex items-center justify-center gap-1">
-                <span>Use as Cover Art 🎨</span>
+                <span>一键用作视频封面 🎨</span>
               </button>
             </div>
           </div>
@@ -455,10 +461,10 @@
         <!-- Live Photo Canvas Column -->
         <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
           <div class="flex items-center justify-between w-full max-w-[280px] px-1 text-xs">
-            <span class="font-bold text-pink-950 font-serif">Retouch Canvas</span>
+            <span class="font-bold text-pink-950 font-serif">修图画布</span>
             <!-- Hold to Compare Button -->
             <button id="btn-compare-photo" class="px-2.5 py-1 rounded-full bg-white border border-pink-300 text-[11px] font-bold text-pink-700 hover:bg-pink-50 transition shadow-xs select-none">
-              Hold to Compare
+              长按对比原图
             </button>
           </div>
 
@@ -469,14 +475,14 @@
               <div onclick="document.getElementById('editor-photo-input').click()" class="w-16 h-16 rounded-3xl bg-pink-100 hover:bg-pink-200 border border-pink-300 text-pink-500 flex items-center justify-center text-3xl mb-3 shadow-xs transition active:scale-95">
                 📸
               </div>
-              <p class="text-sm font-bold text-pink-950 font-serif">Retouch Studio Ready</p>
-              <p class="text-[11px] text-pink-600 mt-1 max-w-[200px]">Tap to choose a photo or test with our sample editorial look</p>
+              <p class="text-sm font-bold text-pink-950 font-serif">修图工作台已就绪</p>
+              <p class="text-[11px] text-pink-600 mt-1 max-w-[200px]">轻点选择手机照片，或使用大片示例体验</p>
               <button onclick="event.stopPropagation(); loadEditorSamplePhoto();" class="mt-3.5 px-4 py-2 rounded-full bg-pink-500 hover:bg-pink-600 text-white text-xs font-semibold shadow-sm transition active:scale-95">
-                Load Sample Look ✨
+                载入大片示例 ✨
               </button>
             </div>
           </div>
-          <p class="text-[10px] text-pink-400 font-medium text-center">High-Definition Editorial Canvas · 720x1280</p>
+          <p class="text-[10px] text-pink-400 font-medium text-center">高清杂志画报画布 · 720x1280</p>
         </div>
 
       </div>
@@ -487,9 +493,9 @@
     <!-- ================================================================= -->
     <div id="tool-voice" class="tool-view hidden space-y-4 max-w-2xl mx-auto">
       <div class="space-y-1 text-center">
-        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 03 · Voice Studio</span>
-        <h2 class="text-2xl font-bold font-serif text-pink-950">Record Confident Voiceovers</h2>
-        <p class="text-xs text-pink-800">Our smart silence trimmer snips out awkward pauses and deep breaths automatically!</p>
+        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">工具 03 · 声音录音棚</span>
+        <h2 class="text-2xl font-bold font-serif text-pink-950">录制自信灵动旁白</h2>
+        <p class="text-xs text-pink-800">AI 智能自动切除停顿空白与换气声，瞬间打造卡点紧凑节奏！</p>
       </div>
 
       <!-- Record Card -->
@@ -501,7 +507,7 @@
         </div>
         <div>
           <div id="voice-studio-timer" class="text-xl font-mono font-bold text-pink-950 tracking-widest">00:00</div>
-          <p id="voice-studio-status" class="text-xs text-pink-600 mt-1">Tap the circle to start speaking</p>
+          <p id="voice-studio-status" class="text-xs text-pink-600 mt-1">轻点圆形按钮开始录音</p>
         </div>
 
         <!-- Live Waveform -->
@@ -516,11 +522,11 @@
               <i class="ph-bold ph-scissors"></i>
             </div>
             <div>
-              <span class="text-xs font-bold text-pink-950 block">Smart Dead-Air Trimmer</span>
-              <span class="text-[10px] text-pink-600">Skips awkward pauses for snappy TikTok pacing</span>
+              <span class="text-xs font-bold text-pink-950 block">智能空白停顿剪除</span>
+              <span class="text-[10px] text-pink-600">自动消除尴尬停顿，让 TikTok 口播干练抓人</span>
             </div>
           </div>
-          <span id="voice-studio-silence-stats" class="text-[11px] font-mono text-pink-700 font-bold">Ready</span>
+          <span id="voice-studio-silence-stats" class="text-[11px] font-mono text-pink-700 font-bold">就绪</span>
         </div>
       </div>
 
@@ -531,18 +537,18 @@
             🎵
           </div>
           <div>
-            <span class="text-xs font-bold text-pink-950 block">Kiki's Dream Lo-Fi Beat 🎀</span>
-            <span class="text-[10px] text-pink-600">Soft music-box chords & gentle vinyl warmth</span>
+            <span class="text-xs font-bold text-pink-950 block">Kiki 专属梦幻 Lo-Fi 伴奏 🎀</span>
+            <span class="text-[10px] text-pink-600">轻柔音乐盒和弦与胶片底噪</span>
           </div>
         </div>
         <button onclick="toggleBeatPreview()" id="btn-voice-beat" class="px-3 py-1.5 rounded-xl bg-pink-100 hover:bg-pink-200 text-xs font-bold text-pink-800 transition active:scale-95">
-          Play Beat
+          播放伴奏
         </button>
       </div>
 
       <!-- Action Button -->
       <button onclick="switchTool('video')" class="w-full py-3.5 rounded-2xl bg-pink-500 hover:bg-pink-600 text-white font-serif font-bold text-sm shadow-md transition flex items-center justify-center gap-1.5 active:scale-98">
-        <span>Attach Audio to Video Maker 🎬</span>
+        <span>将音频应用到视频制作 🎬</span>
       </button>
     </div>
 
@@ -551,9 +557,9 @@
     <!-- ================================================================= -->
     <div id="tool-prompter" class="tool-view hidden space-y-4 max-w-2xl mx-auto">
       <div class="space-y-1 text-center">
-        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 04 · Teleprompter & Ideas</span>
-        <h2 class="text-2xl font-bold font-serif text-pink-950">Read Your Lines Smoothly</h2>
-        <p class="text-xs text-pink-800">Never stumble on camera! Words gently scroll up as you speak.</p>
+        <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">工具 04 · 提词器与灵感库</span>
+        <h2 class="text-2xl font-bold font-serif text-pink-950">面对镜头流利自然表达</h2>
+        <p class="text-xs text-pink-800">面对镜头再也不卡壳！文字随你说话速度匀速优雅上滚。</p>
       </div>
 
       <!-- Floating Prompter Screen -->
@@ -561,17 +567,17 @@
         <div class="flex items-center justify-between text-xs border-b border-pink-200 pb-2">
           <div class="flex items-center gap-1.5 font-bold text-pink-950">
             <span>📜</span>
-            <span>Live Prompter</span>
+            <span>实时提词器</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-[10px] text-pink-600">Scroll Speed:</span>
+            <span class="text-[10px] text-pink-600">滚屏速度:</span>
             <input type="range" id="prompter-speed" min="1" max="5" value="2" class="w-20">
           </div>
         </div>
 
         <div id="prompter-box" class="h-44 overflow-y-auto rounded-2xl bg-pink-50/50 p-4 border border-pink-200 text-center flex flex-col items-center justify-start scroll-smooth">
           <div id="prompter-content" class="text-base font-serif font-semibold text-pink-950 leading-relaxed py-8">
-            "Hey guys! Today I'm putting together my favorite cozy look 🎀 Start with the strawberry knit, add my favorite pleated skirt, and finish with retro cream sneakers ✨ What do you think?"
+            "哈喽大家好！今天来搭一套我最近超爱的惬意穿搭 🎀 先穿这件草莓奶针织衫，配上我最爱的百褶短裙，再踩一双复古奶白球鞋 ✨ 大家觉得好看吗？"
           </div>
         </div>
 
@@ -579,10 +585,10 @@
         <div class="flex items-center justify-center gap-3 pt-1">
           <button onclick="togglePrompterScroll()" id="btn-prompter-toggle" class="px-5 py-2 rounded-2xl bg-gradient-to-r from-pink-400 to-rose-400 text-white text-xs font-bold shadow-sm transition active:scale-95 flex items-center gap-1">
             <i id="prompter-btn-icon" class="ph-bold ph-play"></i>
-            <span id="prompter-btn-label">Start Scrolling</span>
+            <span id="prompter-btn-label">开始滚动</span>
           </button>
           <button onclick="resetPrompterScroll()" class="px-4 py-2 rounded-2xl bg-white hover:bg-pink-50 border border-pink-300 text-xs font-semibold text-pink-700 shadow-xs transition active:scale-95">
-            Rewind
+            回到开头
           </button>
         </div>
       </div>
@@ -590,31 +596,31 @@
       <!-- Script Notepad -->
       <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
         <div class="flex items-center justify-between text-xs font-bold text-pink-950">
-          <span>Edit Script & Notes:</span>
-          <span class="text-[10px] text-pink-500 font-normal">Auto-saves to your phone ✨</span>
+          <span>编辑台词与脚本笔记:</span>
+          <span class="text-[10px] text-pink-500 font-normal">自动保存至手机本地 ✨</span>
         </div>
         <textarea id="script-pad" rows="3" class="w-full bg-pink-50/60 border border-pink-200 rounded-2xl p-3 text-xs text-pink-950 placeholder-pink-400 focus:outline-none focus:border-pink-400 font-sans leading-relaxed"></textarea>
       </div>
 
       <!-- Viral Hook Category Formulas -->
       <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2.5 shadow-xs">
-        <span class="text-xs font-bold text-pink-950 block">Tap a Viral TikTok Idea to Load:</span>
+        <span class="text-xs font-bold text-pink-950 block">点击一键载入爆款视频开场模板:</span>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <button onclick="loadPrompterHook('Storytime about the most unexpected thing that happened to me today... you will not believe this 🎀')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
-            <span class="font-bold block">📖 Wild Storytime</span>
-            <span class="text-[10px] text-pink-600">High engagement hook</span>
+          <button onclick="loadPrompterHook('给你们讲一件今天发生在我身上超级离谱的事……你们绝对想不到 🎀')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">📖 抓马故事会</span>
+            <span class="text-[10px] text-pink-600">高互动沉浸开场</span>
           </button>
-          <button onclick="loadPrompterHook('Come spend a productive morning with me getting ready for the day ✨')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
-            <span class="font-bold block">☕ Morning Routine</span>
-            <span class="text-[10px] text-pink-600">Aesthetic lifestyle vlog</span>
+          <button onclick="loadPrompterHook('跟我一起度过一个被幸福感包围的早晨，出门前沉浸式准备 ✨')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">☕ 治愈早晨日常</span>
+            <span class="text-[10px] text-pink-600">唯美氛围感 Vlog</span>
           </button>
-          <button onclick="loadPrompterHook('Here are 3 things in my routine that literally changed my life forever 🌸')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
-            <span class="font-bold block">💡 Game Changers</span>
-            <span class="text-[10px] text-pink-600">Save & share viral format</span>
+          <button onclick="loadPrompterHook('我一定要跟你们按头安利这3样彻底改变我生活方式的宝藏好物 🌸')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">💡 宝藏爱用物</span>
+            <span class="text-[10px] text-pink-600">高收藏爆款格式</span>
           </button>
-          <button onclick="loadPrompterHook('Unboxing everything I ordered this week... wait till you see the last one 💖')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
-            <span class="font-bold block">📦 Cute Haul</span>
-            <span class="text-[10px] text-pink-600">Curiosity retention hook</span>
+          <button onclick="loadPrompterHook('本周快递开箱合辑！一定要看到最后一个，真的美到失语 💖')" class="p-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-200 text-left text-pink-900 transition">
+            <span class="font-bold block">📦 开箱心动好物</span>
+            <span class="text-[10px] text-pink-600">拉满期待值钩子</span>
           </button>
         </div>
       </div>
@@ -629,51 +635,51 @@
         <!-- Controls Column -->
         <div class="lg:col-span-7 space-y-4">
           <div class="space-y-1">
-            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">Tool 05 · Cover Designer</span>
-            <h2 class="text-2xl font-bold font-serif text-pink-950">Aesthetic TikTok Covers</h2>
-            <p class="text-xs text-pink-800">Make eye-catching thumbnails with cute stickers so your TikTok grid looks gorgeous!</p>
+            <span class="text-xs font-bold text-pink-600 uppercase font-mono tracking-wider">工具 05 · 封面设计器</span>
+            <h2 class="text-2xl font-bold font-serif text-pink-950">高颜值 TikTok / 小红书封面</h2>
+            <p class="text-xs text-pink-800">搭配可爱贴纸定制吸睛封面，让主页主视觉高级又吸粉！</p>
           </div>
 
           <!-- Cover Title Input -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
-            <label class="text-xs font-bold text-pink-950 block">Video Cover Headline:</label>
-            <input type="text" id="cover-title-input" value="DAY IN MY LIFE 🎀" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2.5 text-xs text-pink-950 font-bold focus:outline-none focus:border-pink-500">
+            <label class="text-xs font-bold text-pink-950 block">封面吸睛大标题:</label>
+            <input type="text" id="cover-title-input" value="今日生活碎片 🎀" class="w-full bg-pink-50/70 border border-pink-300 rounded-2xl px-3.5 py-2.5 text-xs text-pink-950 font-bold focus:outline-none focus:border-pink-500">
           </div>
 
           <!-- Background Color / Photo Choice -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
-            <span class="text-xs font-bold text-pink-950 block">Cover Background:</span>
+            <span class="text-xs font-bold text-pink-950 block">封面底色背景:</span>
             <div class="grid grid-cols-4 gap-2 text-xs">
               <button onclick="setCoverBg('milk')" class="cover-bg-btn active p-2 rounded-2xl border text-center bg-pink-100 border-pink-400 font-medium text-pink-900" data-bg="milk">
-                🍓 Milk
+                🍓 草莓奶
               </button>
               <button onclick="setCoverBg('sunset')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="sunset">
-                🍑 Peach
+                🍑 蜜桃
               </button>
               <button onclick="setCoverBg('lilac')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="lilac">
-                💜 Lilac
+                💜 丁香
               </button>
               <button onclick="setCoverBg('photo')" class="cover-bg-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900" data-bg="photo">
-                📸 Photo
+                📸 照片
               </button>
             </div>
           </div>
 
           <!-- Stickers Toggle -->
           <div class="bg-white/90 border border-pink-200 rounded-3xl p-4 space-y-2 shadow-xs">
-            <span class="text-xs font-bold text-pink-950 block">Stickers on Cover:</span>
+            <span class="text-xs font-bold text-pink-950 block">封面可爱贴纸:</span>
             <div class="flex flex-wrap gap-2 text-xs">
               <button onclick="toggleCoverSticker('bow')" id="csticker-bow" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
-                🎀 Big Ribbon
+                🎀 蝴蝶结
               </button>
               <button onclick="toggleCoverSticker('sparkle')" id="csticker-sparkle" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
-                ✨ Sparkles
+                ✨ 闪耀星芒
               </button>
               <button onclick="toggleCoverSticker('tape')" id="csticker-tape" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
-                🏷️ Washi Tape
+                🏷️ 胶带贴纸
               </button>
               <button onclick="toggleCoverSticker('kiki')" id="csticker-kiki" class="px-3.5 py-1.5 rounded-full border border-pink-400 bg-pink-100 text-pink-900 font-medium">
-                🌸 Kiki's Edit
+                🌸 Kiki 专属标
               </button>
             </div>
           </div>
@@ -681,17 +687,17 @@
           <!-- Download Cover -->
           <button onclick="downloadCoverImage()" class="w-full py-4 rounded-3xl bg-gradient-to-r from-pink-400 via-rose-400 to-pink-500 text-white font-serif font-bold text-base shadow-lg shadow-pink-300/50 active:scale-98 transition flex items-center justify-center gap-2">
             <i class="ph-bold ph-download-simple text-lg"></i>
-            <span>Download Cover (Camera Roll) 🎀</span>
+            <span>保存封面至手机相册 🎀</span>
           </button>
         </div>
 
         <!-- Cover Preview Canvas -->
         <div class="lg:col-span-5 flex flex-col items-center justify-center space-y-2.5">
-          <span class="text-xs font-bold text-pink-950 font-serif">9:16 TikTok Cover Preview</span>
+          <span class="text-xs font-bold text-pink-950 font-serif">9:16 封面实时预览</span>
           <div class="relative w-[270px] h-[480px] rounded-[32px] overflow-hidden border-4 border-pink-200 shadow-xl shadow-pink-200/50 bg-white flex items-center justify-center">
             <canvas id="cover-canvas" width="540" height="960" class="w-full h-full object-cover block"></canvas>
           </div>
-          <p class="text-[10px] text-pink-500">Ready for your TikTok profile feed</p>
+          <p class="text-[10px] text-pink-500">完美适配个人主页网格排版</p>
         </div>
 
       </div>
@@ -704,27 +710,27 @@
     <div class="max-w-lg mx-auto grid grid-cols-5 gap-1">
       <button onclick="switchTool('video')" id="nav-btn-video" class="nav-tab active flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-700 bg-pink-100/90 font-bold transition active:scale-95">
         <span class="text-base">🎬</span>
-        <span class="text-[9px] font-bold mt-0.5">Video</span>
+        <span class="text-[9px] font-bold mt-0.5">剪辑</span>
       </button>
 
       <button onclick="switchTool('photos')" id="nav-btn-photos" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
         <span class="text-base">📸</span>
-        <span class="text-[9px] font-medium mt-0.5">Photos</span>
+        <span class="text-[9px] font-medium mt-0.5">修图</span>
       </button>
 
       <button onclick="switchTool('voice')" id="nav-btn-voice" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
         <span class="text-base">🎙️</span>
-        <span class="text-[9px] font-medium mt-0.5">Voice</span>
+        <span class="text-[9px] font-medium mt-0.5">录音</span>
       </button>
 
       <button onclick="switchTool('prompter')" id="nav-btn-prompter" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
         <span class="text-base">📜</span>
-        <span class="text-[9px] font-medium mt-0.5">Prompter</span>
+        <span class="text-[9px] font-medium mt-0.5">提词</span>
       </button>
 
       <button onclick="switchTool('cover')" id="nav-btn-cover" class="nav-tab flex flex-col items-center justify-center py-1.5 rounded-2xl text-pink-600/70 hover:text-pink-900 transition active:scale-95">
         <span class="text-base">🎨</span>
-        <span class="text-[9px] font-medium mt-0.5">Covers</span>
+        <span class="text-[9px] font-medium mt-0.5">封面</span>
       </button>
     </div>
   </nav>
@@ -775,7 +781,19 @@
     let coverBgMode = 'milk';
     let coverStickers = { bow: true, sparkle: true, tape: true, kiki: true };
 
-    const HOOK_PROMPTS = [
+    let currentLang = 'zh';
+
+    const HOOK_PROMPTS_ZH = [
+      "今日份心动穿搭，每件都是本命 ✨",
+      "跟我一起搭一套绝不出错的温柔穿搭 🎀",
+      "照着这个穿搭公式，出门被要了八次链接 💫",
+      "衣柜里这些让我心情变好的宝藏单品 🌸",
+      "沉浸式出门准备 GRWM：画报级穿搭 📸",
+      "一件单品的 3 种高阶搭配思路 ⚡",
+      "Kiki 的私藏穿搭碎片记录 💖"
+    ];
+
+    const HOOK_PROMPTS_EN = [
       "fit check with my favorite pieces ✨",
       "styling this outfit for today 🎀",
       "outfit formula that literally never fails 💫",
@@ -784,6 +802,8 @@
       "how to style this piece 3 ways ⚡",
       "a little outfit diary for Kiki 💖"
     ];
+
+    let HOOK_PROMPTS = HOOK_PROMPTS_ZH;
 
     function showToast(msg, icon = '🎀') {
       const toast = document.getElementById('toast');
@@ -799,7 +819,15 @@
     }
 
     /* Tool Switching Controller */
-    const TOOL_SUBTITLES = {
+    const TOOL_SUBTITLES_ZH = {
+      video: '当前工具: 🎬 视频剪辑',
+      photos: '当前工具: 📸 顶流修图暗房',
+      voice: '当前工具: 🎙️ 声音录音棚',
+      prompter: '当前工具: 📜 提词器与灵感',
+      cover: '当前工具: 🎨 封面设计器'
+    };
+
+    const TOOL_SUBTITLES_EN = {
       video: 'Tool: 🎬 Video Maker',
       photos: 'Tool: 📸 Insider Photo Studio',
       voice: 'Tool: 🎙️ Voice Studio',
@@ -807,11 +835,15 @@
       cover: 'Tool: 🎨 Cover Designer'
     };
 
+    function getSubtitles() {
+      return currentLang === 'zh' ? TOOL_SUBTITLES_ZH : TOOL_SUBTITLES_EN;
+    }
+
     function switchTool(toolKey) {
       activeTool = toolKey;
       document.querySelectorAll('.tool-view').forEach(v => v.classList.add('hidden'));
       document.getElementById(`tool-${toolKey}`).classList.remove('hidden');
-      document.getElementById('active-tool-subtitle').innerText = TOOL_SUBTITLES[toolKey];
+      document.getElementById('active-tool-subtitle').innerText = getSubtitles()[toolKey];
 
       ['video', 'photos', 'voice', 'prompter', 'cover'].forEach(k => {
         const btn = document.getElementById(`nav-btn-${k}`);
@@ -827,33 +859,41 @@
       } else if (toolKey === 'cover') {
         renderCoverCanvas();
       }
-      showToast(`Switched to ${TOOL_SUBTITLES[toolKey]}`, '✨');
+      showToast(currentLang === 'zh' ? `已切换至 ${getSubtitles()[toolKey]}` : `Switched to ${getSubtitles()[toolKey]}`, '✨');
     }
 
     function resetCurrentTool() {
       if (activeTool === 'video') {
         uploadedImages = [];
         refreshThumbnails();
-        showToast('Video photos cleared 🎬', '✨');
+        showToast(currentLang === 'zh' ? '视频照片已清空 🎬' : 'Video photos cleared 🎬', '✨');
       } else if (activeTool === 'photos') {
         editorImage = null;
         editorRawImage = null;
         document.getElementById('editor-empty-state').classList.remove('hidden');
         renderEditorCanvas();
-        showToast('Photo editor reset 📸', '✨');
+        showToast(currentLang === 'zh' ? '修图画布已重置 📸' : 'Photo editor reset 📸', '✨');
       } else if (activeTool === 'voice') {
         userAudioBuffer = null;
         document.getElementById('voice-studio-timer').innerText = '00:00';
-        document.getElementById('voice-studio-silence-stats').innerText = 'Ready';
-        showToast('Voice recordings reset 🎙️', '✨');
+        document.getElementById('voice-studio-silence-stats').innerText = currentLang === 'zh' ? '就绪' : 'Ready';
+        showToast(currentLang === 'zh' ? '录音音频已重置 🎙️' : 'Voice recordings reset 🎙️', '✨');
       } else if (activeTool === 'prompter') {
         resetPrompterScroll();
-        showToast('Prompter reset 📜', '✨');
+        showToast(currentLang === 'zh' ? '提词器已重置 📜' : 'Prompter reset 📜', '✨');
       } else if (activeTool === 'cover') {
-        document.getElementById('cover-title-input').value = 'DAY IN MY LIFE 🎀';
+        document.getElementById('cover-title-input').value = currentLang === 'zh' ? '今日生活碎片 🎀' : 'DAY IN MY LIFE 🎀';
         renderCoverCanvas();
-        showToast('Cover designer reset 🎨', '✨');
+        showToast(currentLang === 'zh' ? '封面设计器已重置 🎨' : 'Cover designer reset 🎨', '✨');
       }
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'zh' ? 'en' : 'zh';
+      document.getElementById('lang-toggle-text').innerText = currentLang === 'zh' ? '中文' : 'EN';
+      HOOK_PROMPTS = currentLang === 'zh' ? HOOK_PROMPTS_ZH : HOOK_PROMPTS_EN;
+      document.getElementById('active-tool-subtitle').innerText = getSubtitles()[activeTool];
+      showToast(currentLang === 'zh' ? '已切换至中文模式 🎀' : 'Switched to English 🎀', '🌐');
     }
 
     /* =========================================================================
@@ -906,7 +946,7 @@
           editorRawImage = img;
           editorEmptyState.classList.add('hidden');
           renderEditorCanvas();
-          showToast('Photo loaded into Retouch Studio! 📸', '🎀');
+          showToast(currentLang === 'zh' ? '照片已载入修图暗房！📸' : 'Photo loaded into Retouch Studio! 📸', '🎀');
         };
         img.src = event.target.result;
       };
@@ -929,11 +969,24 @@
           btn.className = 'crop-btn p-2 rounded-2xl border text-center bg-white border-pink-200 font-medium text-pink-900 transition';
         }
       });
-      document.getElementById('active-crop-name').innerText = (ratioKey === '9:16') ? '9:16 Vertical (TikTok)' : (ratioKey === '4:5') ? '4:5 (Portrait Feed)' : '1:1 (Square)';
+      if (currentLang === 'zh') {
+        document.getElementById('active-crop-name').innerText = (ratioKey === '9:16') ? '9:16 竖屏 (TikTok/抖音)' : (ratioKey === '4:5') ? '4:5 (人像/小红书)' : '1:1 (正方形)';
+      } else {
+        document.getElementById('active-crop-name').innerText = (ratioKey === '9:16') ? '9:16 Vertical (TikTok)' : (ratioKey === '4:5') ? '4:5 (Portrait Feed)' : '1:1 (Square)';
+      }
       renderEditorCanvas();
     }
 
-    const EMULSION_NAMES = {
+    const EMULSION_NAMES_ZH = {
+      portra: 'Portra 暖光 🌸',
+      flash: '影棚直闪 📸',
+      parisian: '巴黎风尚 🌹',
+      copenhagen: '哥本哈根 ✨',
+      film90: '90s 琥珀胶片 🎞️',
+      noir: '丝绒黑白 🖤'
+    };
+
+    const EMULSION_NAMES_EN = {
       portra: 'Portra Warmth 🌸',
       flash: 'Studio Flash 📸',
       parisian: 'Parisian Chic 🌹',
@@ -951,7 +1004,8 @@
           btn.className = 'emulsion-btn p-2.5 rounded-2xl border text-left bg-white border-pink-200 font-bold text-pink-900 transition';
         }
       });
-      document.getElementById('active-emulsion-name').innerText = EMULSION_NAMES[emulsionKey];
+      const names = currentLang === 'zh' ? EMULSION_NAMES_ZH : EMULSION_NAMES_EN;
+      document.getElementById('active-emulsion-name').innerText = names[emulsionKey];
       renderEditorCanvas();
     }
 
@@ -981,11 +1035,11 @@
       ctx.fillStyle = '#4a1525';
       ctx.font = 'bold 72px "Playfair Display", serif';
       ctx.textAlign = 'center';
-      ctx.fillText('KIKI EDITORIAL 🎀', 540, 850);
+      ctx.fillText(currentLang === 'zh' ? 'KIKI 潮流大片 🎀' : 'KIKI EDITORIAL 🎀', 540, 850);
 
       ctx.fillStyle = '#db2777';
       ctx.font = '600 32px "Outfit", sans-serif';
-      ctx.fillText('Celebrity Retouch Sample', 540, 920);
+      ctx.fillText(currentLang === 'zh' ? '明星同款精修示例' : 'Celebrity Retouch Sample', 540, 920);
 
       const img = new Image();
       img.onload = () => {
@@ -995,7 +1049,7 @@
         renderEditorCanvas();
       };
       img.src = canvas.toDataURL();
-      showToast('Sample photo loaded for retouching! 🌸', '✨');
+      showToast(currentLang === 'zh' ? '大片精修示例图已载入！🌸' : 'Sample photo loaded for retouching! 🌸', '✨');
     }
 
     function renderEditorCanvas() {
@@ -1046,7 +1100,7 @@
         editorCtx.fillStyle = '#ffffff';
         editorCtx.font = 'bold 13px "Outfit", sans-serif';
         editorCtx.textAlign = 'center';
-        editorCtx.fillText('ORIGINAL PHOTO', cw / 2, 51);
+        editorCtx.fillText(currentLang === 'zh' ? '原始照片对比' : 'ORIGINAL PHOTO', cw / 2, 51);
         return;
       }
 
@@ -1146,19 +1200,19 @@
 
     function downloadEditedPhoto() {
       if (!editorImage) {
-        showToast('Load a photo to save first! 📸', '⚠️');
+        showToast(currentLang === 'zh' ? '请先选择或载入一张照片！📸' : 'Load a photo to save first! 📸', '⚠️');
         return;
       }
       const link = document.createElement('a');
       link.download = `SisterKiki-Photo-${Date.now()}.png`;
       link.href = editorCanvas.toDataURL('image/png');
       link.click();
-      showToast('Retouched photo saved to Camera Roll! 🎀', '💖');
+      showToast(currentLang === 'zh' ? '精修大片已保存至手机相册！🎀' : 'Retouched photo saved to Camera Roll! 🎀', '💖');
     }
 
     function sendPhotoToVideo() {
       if (!editorImage) {
-        showToast('Please load a photo first 📸', '⚠️');
+        showToast(currentLang === 'zh' ? '请先载入照片 📸' : 'Please load a photo first 📸', '⚠️');
         return;
       }
       const newImg = new Image();
@@ -1166,14 +1220,14 @@
         uploadedImages.push(newImg);
         refreshThumbnails();
         switchTool('video');
-        showToast('Photo added to Video Maker! 🎬', '✨');
+        showToast(currentLang === 'zh' ? '照片已添加至视频制作！🎬' : 'Photo added to Video Maker! 🎬', '✨');
       };
       newImg.src = editorCanvas.toDataURL('image/png');
     }
 
     function sendPhotoToCover() {
       if (!editorImage) {
-        showToast('Please load a photo first 📸', '⚠️');
+        showToast(currentLang === 'zh' ? '请先载入照片 📸' : 'Please load a photo first 📸', '⚠️');
         return;
       }
       const newImg = new Image();
@@ -1182,7 +1236,7 @@
         refreshThumbnails();
         setCoverBg('photo');
         switchTool('cover');
-        showToast('Photo set as Video Cover! 🎨', '✨');
+        showToast(currentLang === 'zh' ? '照片已设为视频封面！🎨' : 'Photo set as Video Cover! 🎨', '✨');
       };
       newImg.src = editorCanvas.toDataURL('image/png');
     }
@@ -1213,7 +1267,7 @@
         };
         reader.readAsDataURL(file);
       });
-      showToast('Photos loaded! Auto-fitting 9:16 ✨', '🎀');
+      showToast(currentLang === 'zh' ? '照片已载入！正在智能适配 9:16 ✨' : 'Photos loaded! Auto-fitting 9:16 ✨', '🎀');
     });
 
     function refreshThumbnails() {
@@ -1221,7 +1275,9 @@
       if (uploadedImages.length > 0) {
         thumbWrap.classList.remove('hidden');
         emptyState.classList.add('hidden');
-        photoCountLabel.innerText = `${uploadedImages.length} photo${uploadedImages.length > 1 ? 's' : ''} ready`;
+        photoCountLabel.innerText = currentLang === 'zh' 
+          ? `${uploadedImages.length} 张照片已就绪` 
+          : `${uploadedImages.length} photo${uploadedImages.length > 1 ? 's' : ''} ready`;
       } else {
         thumbWrap.classList.add('hidden');
         emptyState.classList.remove('hidden');
@@ -1256,7 +1312,14 @@
       });
     }
 
-    const LAYOUT_NAMES = {
+    const LAYOUT_NAMES_ZH = {
+      bokeh: '梦幻柔焦羽翼 🌸',
+      polaroid: '时髦拍立得 📸',
+      split: '时装双拼 🎀',
+      drift: '电影推拉 ✨'
+    };
+
+    const LAYOUT_NAMES_EN = {
       bokeh: 'Dreamy Bokeh Wings 🌸',
       polaroid: 'Polaroid Chic 📸',
       split: 'Editorial Split 🎀',
@@ -1272,10 +1335,22 @@
           btn.className = 'layout-btn p-2.5 rounded-2xl border text-left bg-white hover:bg-pink-50 border-pink-200 transition';
         }
       });
-      document.getElementById('active-layout-name').innerText = LAYOUT_NAMES[layoutKey];
+      const names = currentLang === 'zh' ? LAYOUT_NAMES_ZH : LAYOUT_NAMES_EN;
+      document.getElementById('active-layout-name').innerText = names[layoutKey];
     }
 
-    const VIBE_METADATA = {
+    const VIBE_METADATA_ZH = {
+      cherrypop: '草莓甜心 🍓',
+      cleangirl: '清透氧气 ✨',
+      parisian: '巴黎玫瑰 🌹',
+      golden: '黄金日落 ☀️',
+      film90s: '90s 胶片 🎞️',
+      runway: '秀场直闪 📸',
+      sunset: '蜜桃晚霞 🍑',
+      moody: '复古冷橄 🍃'
+    };
+
+    const VIBE_METADATA_EN = {
       cherrypop: 'Strawberry Milk 🍓',
       cleangirl: 'Clean Girl ✨',
       parisian: 'Parisian Rose 🌹',
@@ -1295,7 +1370,8 @@
           btn.className = 'vibe-btn p-2 rounded-xl border text-left bg-white hover:bg-pink-50 border-pink-200 text-xs font-bold text-pink-950 transition';
         }
       });
-      document.getElementById('active-vibe-name').innerText = VIBE_METADATA[vibeKey];
+      const vibes = currentLang === 'zh' ? VIBE_METADATA_ZH : VIBE_METADATA_EN;
+      document.getElementById('active-vibe-name').innerText = vibes[vibeKey];
     }
 
     function shuffleHookPrompt() {
@@ -1303,7 +1379,7 @@
       const candidates = HOOK_PROMPTS.filter(p => p !== current);
       const chosen = candidates[Math.floor(Math.random() * candidates.length)];
       document.getElementById('hook-text-input').value = chosen;
-      showToast('New hook idea applied! 🎀', '💡');
+      showToast(currentLang === 'zh' ? '已应用新开场灵感！🎀' : 'New hook idea applied! 🎀', '💡');
     }
 
     function toggleSafeZone() {
@@ -1312,17 +1388,22 @@
       const btnText = document.getElementById('safe-zone-btn-text');
       if (isSafeZoneVisible) {
         safeZoneOverlay.classList.remove('hidden');
-        btnText.innerText = 'Safe Zone: On 🎀';
-        showToast('TikTok UI Safe Zones active', '🎀');
+        btnText.innerText = currentLang === 'zh' ? '安全区: 开启 🎀' : 'Safe Zone: On 🎀';
+        showToast(currentLang === 'zh' ? 'TikTok 界面安全区指引已开启' : 'TikTok UI Safe Zones active', '🎀');
       } else {
         safeZoneOverlay.classList.add('hidden');
-        btnText.innerText = 'Safe Zone: Off';
+        btnText.innerText = currentLang === 'zh' ? '安全区: 关闭' : 'Safe Zone: Off';
       }
     }
 
     function loadSampleFashionLooks() {
       uploadedImages = [];
-      const sampleFits = [
+      const sampleFits = currentLang === 'zh' ? [
+        ['#fff0f5', '#f472b6', '今日穿搭 01 🎀', '草莓牛奶针织衫 + 百褶短裙'],
+        ['#fff5eb', '#fb923c', '今日穿搭 02 🌸', '法式风衣 + 厚底乐福鞋'],
+        ['#f0fdf4', '#4ade80', '今日穿搭 03 🍃', '薄荷西装 + 复古奶白球鞋'],
+        ['#faf5ff', '#c084fc', '今日穿搭 04 💖', '丁香芭蕾风吊带裙 + 缎带']
+      ] : [
         ['#fff0f5', '#f472b6', 'OOTD 01 🎀', 'Strawberry Milk Knit & Tennis Skirt'],
         ['#fff5eb', '#fb923c', 'OOTD 02 🌸', 'Parisian Trench & Chunky Loafers'],
         ['#f0fdf4', '#4ade80', 'OOTD 03 🍃', 'Mint Blazer & Retro Cream Sneakers'],
@@ -1366,7 +1447,7 @@
 
         ctx.fillStyle = '#9d174d';
         ctx.font = '600 22px "JetBrains Mono", monospace';
-        ctx.fillText('SISTER KIKI STUDIO · TIKTOK SUITE 🎀', 540, 1020);
+        ctx.fillText(currentLang === 'zh' ? 'SISTER KIKI STUDIO · 潮流创作工坊 🎀' : 'SISTER KIKI STUDIO · TIKTOK SUITE 🎀', 540, 1020);
 
         const img = new Image();
         img.onload = () => {
@@ -1377,7 +1458,7 @@
         img.src = canvas.toDataURL();
       });
 
-      showToast('4 Strawberry milk sample looks loaded! 🎀', '🌸');
+      showToast(currentLang === 'zh' ? '4 套草莓甜心示例穿搭已载入！🎀' : '4 Strawberry milk sample looks loaded! 🎀', '🌸');
     }
 
     /* Live 60fps Video Preview */
@@ -1684,12 +1765,12 @@
         beatSourceNode.connect(audioContext.destination);
         beatSourceNode.start();
         isBeatPlaying = true;
-        if (btn) btn.innerText = 'Stop Beat';
-        showToast('Playing Strawberry Beat 🎀', '🎵');
+        if (btn) btn.innerText = currentLang === 'zh' ? '停止伴奏' : 'Stop Beat';
+        showToast(currentLang === 'zh' ? '正在播放草莓梦幻伴奏 🎀' : 'Playing Strawberry Beat 🎀', '🎵');
       } else {
         if (beatSourceNode) beatSourceNode.stop();
         isBeatPlaying = false;
-        if (btn) btn.innerText = 'Play Beat';
+        if (btn) btn.innerText = currentLang === 'zh' ? '播放伴奏' : 'Play Beat';
       }
     }
 
@@ -1720,14 +1801,14 @@
             const arrayBuffer = await rawAudioBlob.arrayBuffer();
             userAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
             detectDeadAirSilence();
-            showToast('Voice memo saved & silence trimmed! 🎙️', '🎀');
+            showToast(currentLang === 'zh' ? '旁白录音已保存并智能切除空白停顿！🎙️' : 'Voice memo saved & silence trimmed! 🎙️', '🎀');
           };
 
           mediaRecorder.start();
           isRecording = true;
           recordStartTime = performance.now();
           voiceMicIcon.className = 'ph-fill ph-stop';
-          voiceStatus.innerText = 'Recording... Tap to stop';
+          voiceStatus.innerText = currentLang === 'zh' ? '正在录音... 轻点停止' : 'Recording... Tap to stop';
 
           recordTimerInterval = setInterval(() => {
             const elapsed = Math.floor((performance.now() - recordStartTime) / 1000);
@@ -1738,7 +1819,7 @@
 
         } catch (err) {
           console.error(err);
-          showToast('Mic permission required to record.', '⚠️');
+          showToast(currentLang === 'zh' ? '需要麦克风权限以进行录音。' : 'Mic permission required to record.', '⚠️');
         }
       } else {
         isRecording = false;
@@ -1747,7 +1828,7 @@
         if (micStream) micStream.getTracks().forEach(t => t.stop());
         cancelAnimationFrame(micAnimId);
         voiceMicIcon.className = 'ph-fill ph-microphone';
-        voiceStatus.innerText = 'Recording saved! Tap to re-record';
+        voiceStatus.innerText = currentLang === 'zh' ? '录音已完成！轻点重新录制' : 'Recording saved! Tap to re-record';
       }
     });
 
@@ -1821,7 +1902,9 @@
 
       let totalSaved = 0;
       detectedSilences.forEach(s => totalSaved += (s.end - s.start));
-      voiceSilenceStats.innerText = `${detectedSilences.length} pauses (${totalSaved.toFixed(1)}s) cut ✨`;
+      voiceSilenceStats.innerText = currentLang === 'zh'
+        ? `${detectedSilences.length} 处停顿 (${totalSaved.toFixed(1)}秒) 已切除 ✨`
+        : `${detectedSilences.length} pauses (${totalSaved.toFixed(1)}s) cut ✨`;
     }
 
     /* Video Export Engine */
@@ -1835,7 +1918,7 @@
 
     async function renderFinalVideo() {
       if (uploadedImages.length === 0) {
-        showToast('Please upload photos first.', '⚠️');
+        showToast(currentLang === 'zh' ? '请先上传照片。' : 'Please upload photos first.', '⚠️');
         return;
       }
 
@@ -1843,8 +1926,8 @@
       renderCard.classList.remove('hidden');
       renderBar.style.width = '0%';
       renderPct.innerText = '0%';
-      renderStatusText.innerText = 'Preparing 9:16 Video Stream...';
-      showToast('Rendering video for Kiki... 🎀', '🎀');
+      renderStatusText.innerText = currentLang === 'zh' ? '准备 9:16 视频流...' : 'Preparing 9:16 Video Stream...';
+      showToast(currentLang === 'zh' ? '正在为 Kiki 渲染专属视频... 🎀' : 'Rendering video for Kiki... 🎀', '🎀');
 
       const exportCanvas = document.createElement('canvas');
       exportCanvas.width = 720;
@@ -1921,7 +2004,7 @@
         btnDownloadVideo.download = `SisterKiki-${Date.now()}.webm`;
         btnDownloadVideo.classList.remove('hidden');
 
-        showToast('Video ready! Save to camera roll 🎀', '💖');
+        showToast(currentLang === 'zh' ? '视频制作完成！快保存到相册吧 🎀' : 'Video ready! Save to camera roll 🎀', '💖');
         finalVideoPlayer.play();
       };
 
@@ -1949,7 +2032,7 @@
         const pct = Math.floor(progress * 100);
         renderBar.style.width = `${pct}%`;
         renderPct.innerText = `${pct}%`;
-        renderStatusText.innerText = `Assembling frames (${pct}%)...`;
+        renderStatusText.innerText = currentLang === 'zh' ? `正在合成视频画面 (${pct}%)...` : `Assembling frames (${pct}%)...`;
 
         if (progress < 1.0) {
           requestAnimationFrame(stepRender);
@@ -1983,7 +2066,7 @@
 
       if (isPrompterScrolling) {
         btnIcon.className = 'ph-bold ph-pause';
-        btnLabel.innerText = 'Pause';
+        btnLabel.innerText = currentLang === 'zh' ? '暂停' : 'Pause';
         const speed = parseInt(prompterSpeedInput.value, 10);
         const scrollStep = speed * 1.2;
 
@@ -1995,7 +2078,7 @@
         }, 30);
       } else {
         btnIcon.className = 'ph-bold ph-play';
-        btnLabel.innerText = 'Start Scrolling';
+        btnLabel.innerText = currentLang === 'zh' ? '开始滚动' : 'Start Scrolling';
         clearInterval(prompterInterval);
       }
     }
@@ -2010,7 +2093,7 @@
       prompterContent.innerText = `"${hookText}"`;
       localStorage.setItem('kiki_saved_script', hookText);
       resetPrompterScroll();
-      showToast('Hook loaded into prompter! 📜', '✨');
+      showToast(currentLang === 'zh' ? '台词灵感已载入提词器！📜' : 'Hook loaded into prompter! 📜', '✨');
     }
 
     /* =========================================================================
@@ -2095,8 +2178,9 @@
         coverCtx.fillText('🎀', cw / 2, 280);
       }
 
-      const titleText = (coverTitleInput.value || 'TIKTOK COVER').toUpperCase();
-      coverCtx.font = 'bold 42px "Playfair Display", serif';
+      const defaultTitle = currentLang === 'zh' ? '今日生活碎片 🎀' : 'TIKTOK COVER';
+      const titleText = (coverTitleInput.value || defaultTitle).toUpperCase();
+      coverCtx.font = 'bold 42px "Playfair Display", "Outfit", sans-serif';
       coverCtx.textAlign = 'center';
 
       const metrics = coverCtx.measureText(titleText);
@@ -2128,7 +2212,7 @@
       if (coverStickers.kiki) {
         coverCtx.fillStyle = '#ffffff';
         coverCtx.font = '700 18px "JetBrains Mono", monospace';
-        coverCtx.fillText('SISTER KIKI STUDIO · TIKTOK EDIT 🌸', cw / 2, ch - 80);
+        coverCtx.fillText(currentLang === 'zh' ? 'SISTER KIKI STUDIO · 潮流封面 🌸' : 'SISTER KIKI STUDIO · TIKTOK EDIT 🌸', cw / 2, ch - 80);
       }
     }
 
@@ -2137,12 +2221,12 @@
       link.download = `SisterKiki-Cover-${Date.now()}.png`;
       link.href = coverCanvas.toDataURL('image/png');
       link.click();
-      showToast('Cover saved to phone! 🎀', '💖');
+      showToast(currentLang === 'zh' ? '封面已保存至手机相册！🎀' : 'Cover saved to phone! 🎀', '💖');
     }
 
     window.onload = function() {
       renderCoverCanvas();
-      showToast('Welcome to Sister Kiki Studio 🎀', '✨');
+      showToast(currentLang === 'zh' ? '欢迎来到 Sister Kiki 创作工坊 🎀' : 'Welcome to Sister Kiki Studio 🎀', '✨');
     };
   </script>
 </body>

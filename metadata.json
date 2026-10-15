@@ -1,6 +1,6 @@
 {
   "name": "Sister Kiki Studio 🎀",
-  "description": "Kiki's aesthetic fashion video suite for TikTok — with soft strawberry milk vibes, runway filters, creative layouts, dead-air voice trimmer, and on-device 9:16 video export.",
+  "description": "Sister Kiki 潮流创作工坊 🎀 — 专为 TikTok 打造的全能极简创作套件：9:16 视频剪辑、大牌质感修图暗房、AI 智能去停顿录音棚、灵感提词器与封面设计器。",
   "prompt": "AuraPulse Studio - Aesthetic Video Maker",
   "capabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
