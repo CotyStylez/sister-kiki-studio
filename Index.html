@@ -1,0 +1,1231 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#121815">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AuraPulse">
+  <title>AuraPulse Studio 🌿 — Aesthetic Video Maker</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Phosphor Icons (Cute & Aesthetic Iconography) -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Google Fonts: Cormorant Garamond, Playfair Display, Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            botanic: {
+              dark: '#0e1411',
+              card: '#161f1b',
+              surface: '#1b2520',
+              border: '#28372f',
+              sage: '#8fa89b',
+              leaf: '#4ade80',
+              emerald: '#10b981',
+              peach: '#fbcfe8',
+              gold: '#fbbf24',
+              cream: '#fef3c7',
+              rose: '#fda4af'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            cormorant: ['"Cormorant Garamond"', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* iOS friendly safe area and smooth touch scrolling */
+    html, body {
+      background-color: #0c120f;
+      color: #f1f5f3;
+      font-family: 'Outfit', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      overscroll-behavior-y: none;
+    }
+
+    /* Subtle botanical noise gradient */
+    .botanic-glow {
+      background: radial-gradient(circle at 50% 0%, rgba(143, 168, 155, 0.15) 0%, rgba(12, 18, 15, 0) 70%);
+    }
+
+    /* Custom aesthetic range inputs */
+    input[type=range] {
+      accent-color: #fbcfe8;
+    }
+
+    /* Custom delicate scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #28372f;
+      border-radius: 9999px;
+    }
+
+    /* TikTok safe zone guide overlay */
+    .safe-zone-guide {
+      pointer-events: none;
+    }
+
+    /* Shimmer effect for progress bar */
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .animate-shimmer {
+      animation: shimmer 1.8s infinite;
+    }
+  </style>
+
+  <!-- Web App Manifest for Direct Add-To-Home-Screen on Mobile -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"AuraPulse Studio","short_name":"AuraPulse","start_url":".","display":"standalone","background_color":"#0c120f","theme_color":"#121815","icons":[{"src":"https://images.unsplash.com/photo-1545241047-6083a3684587?w=192&h=192&fit=crop","sizes":"192x192","type":"image/png"}]}'>
+</head>
+<body class="min-h-screen botanic-glow flex flex-col justify-between selection:bg-botanic-peach selection:text-botanic-dark">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-botanic-dark/85 backdrop-blur-md border-b border-botanic-border px-4 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-emerald-600 via-botanic-sage to-botanic-peach p-0.5 shadow-md flex items-center justify-center">
+        <div class="w-full h-full bg-botanic-dark rounded-full flex items-center justify-center text-botanic-peach">
+          <i class="ph-fill ph-plant text-lg"></i>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-base font-bold font-serif tracking-wide text-white flex items-center gap-1.5">
+          AuraPulse <span class="text-xs font-sans font-normal text-botanic-sage tracking-normal">Studio</span>
+        </h1>
+        <p class="text-[10px] text-slate-400 font-sans -mt-0.5">Aesthetic Video Magic • Free & Offline</p>
+      </div>
+    </div>
+
+    <!-- Step Indicator & Reset -->
+    <div class="flex items-center gap-2">
+      <span id="wizard-step-tag" class="text-[11px] font-medium px-2.5 py-1 rounded-full bg-botanic-surface border border-botanic-border text-botanic-peach">
+        Step 1 of 4
+      </span>
+      <button onclick="resetAll()" title="Start Fresh" class="w-8 h-8 rounded-full bg-botanic-surface hover:bg-botanic-border text-slate-400 hover:text-white flex items-center justify-center transition">
+        <i class="ph-bold ph-arrow-counter-clockwise text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- NOTIFICATION TOAST -->
+  <div id="toast" class="fixed top-16 inset-x-4 z-50 mx-auto max-w-sm hidden bg-botanic-card/95 border border-botanic-border text-white px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3 transition-all duration-300">
+    <div id="toast-icon-wrap" class="w-7 h-7 rounded-full bg-botanic-sage/20 text-botanic-peach flex items-center justify-center flex-shrink-0">
+      <i id="toast-icon" class="ph-bold ph-sparkle text-sm"></i>
+    </div>
+    <div class="text-xs font-medium text-slate-200" id="toast-message">Ready to create magic</div>
+  </div>
+
+  <!-- MAIN WIZARD CONTAINER -->
+  <main class="max-w-md mx-auto w-full px-4 py-4 flex-1 flex flex-col justify-between">
+
+    <!-- ================================================================= -->
+    <!-- STEP 1: UPLOAD PHOTOS & SMART 9:16 VERTICAL AUTO-FIT -->
+    <!-- ================================================================= -->
+    <section id="step-1" class="wizard-step space-y-4">
+      <div class="space-y-1">
+        <span class="text-xs font-semibold tracking-wider text-botanic-sage uppercase font-mono">01. Your Visuals</span>
+        <h2 class="text-2xl font-bold font-serif text-white">Select Your Cute Shots</h2>
+        <p class="text-xs text-slate-400">Pick 2 to 6 photos. Wide or square shots will get a dreamy blurred bokeh background automatically!</p>
+      </div>
+
+      <!-- Upload Drop Zone -->
+      <label class="block relative group cursor-pointer border-2 border-dashed border-botanic-border hover:border-botanic-sage/70 rounded-3xl p-6 bg-botanic-card/60 hover:bg-botanic-surface/80 transition text-center shadow-lg">
+        <input type="file" id="photo-input" accept="image/*" multiple class="hidden">
+        <div class="flex flex-col items-center gap-2.5">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-botanic-sage/20 to-botanic-peach/20 border border-botanic-sage/30 flex items-center justify-center text-botanic-peach text-2xl group-hover:scale-105 transition">
+            <i class="ph-bold ph-images-square"></i>
+          </div>
+          <div>
+            <span class="text-sm font-semibold text-white block">Tap to Pick Photos from Phone</span>
+            <span class="text-[11px] text-slate-400">Camera Roll • Outfits • Botanicals • Selfies</span>
+          </div>
+        </div>
+      </label>
+
+      <!-- Thumbnails Strip -->
+      <div id="thumb-preview-wrap" class="hidden space-y-2">
+        <div class="flex items-center justify-between text-xs text-botanic-sage font-medium">
+          <span id="photo-count-label">0 photos loaded</span>
+          <span class="text-[10px] text-slate-500">Tap ✕ to remove</span>
+        </div>
+        <div id="thumbnail-strip" class="flex gap-2.5 overflow-x-auto pb-2 pt-1 px-1">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+
+      <!-- Quick sample loader if user just wants to test right away -->
+      <div class="pt-2 text-center">
+        <button onclick="loadSampleAestheticPhotos()" class="text-xs text-botanic-peach/80 hover:text-botanic-peach underline decoration-botanic-peach/40 font-medium">
+          Or tap here to load 4 aesthetic sample photos ✨
+        </button>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- STEP 2: VOICEOVER & SMART DEAD-AIR SILENCE TRIMMER -->
+    <!-- ================================================================= -->
+    <section id="step-2" class="wizard-step hidden space-y-4">
+      <div class="space-y-1">
+        <span class="text-xs font-semibold tracking-wider text-botanic-sage uppercase font-mono">02. Voice & Soundtrack</span>
+        <h2 class="text-2xl font-bold font-serif text-white">Record or Add Audio</h2>
+        <p class="text-xs text-slate-400">Speak naturally! Our smart dead-air trimmer automatically cuts awkward pauses so your audio is snappy.</p>
+      </div>
+
+      <!-- Audio Source Switcher Tabs -->
+      <div class="grid grid-cols-2 gap-2 bg-botanic-card p-1.5 rounded-2xl border border-botanic-border">
+        <button id="tab-btn-record" onclick="switchAudioSource('record')" class="py-2 rounded-xl text-xs font-semibold bg-botanic-surface text-botanic-peach border border-botanic-border shadow-sm flex items-center justify-center gap-1.5 transition">
+          <i class="ph-bold ph-microphone"></i>
+          <span>Record Mic</span>
+        </button>
+        <button id="tab-btn-upload" onclick="switchAudioSource('upload')" class="py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition">
+          <i class="ph-bold ph-file-audio"></i>
+          <span>Upload Audio</span>
+        </button>
+      </div>
+
+      <!-- Sub-Tab A: Record Mic -->
+      <div id="audio-panel-record" class="bg-botanic-card border border-botanic-border rounded-3xl p-5 text-center space-y-4 shadow-xl">
+        <div class="relative w-24 h-24 mx-auto flex items-center justify-center">
+          <div id="mic-pulse-ring" class="absolute inset-0 rounded-full bg-rose-500/20 scale-100 hidden"></div>
+          <button id="btn-toggle-record" class="relative z-10 w-20 h-20 rounded-full bg-gradient-to-tr from-rose-500 to-botanic-peach text-white text-3xl flex items-center justify-center shadow-lg shadow-rose-500/20 active:scale-95 transition">
+            <i id="mic-icon" class="ph-fill ph-microphone"></i>
+          </button>
+        </div>
+        <div>
+          <div id="record-timer-display" class="text-lg font-mono font-bold text-white tracking-widest">00:00</div>
+          <p id="record-instructions" class="text-xs text-slate-400 mt-1">Tap the circle to start speaking</p>
+        </div>
+
+        <!-- Live waveform meter canvas -->
+        <div class="h-12 w-full bg-botanic-dark/80 rounded-xl border border-botanic-border overflow-hidden">
+          <canvas id="live-mic-canvas" class="w-full h-full block"></canvas>
+        </div>
+      </div>
+
+      <!-- Sub-Tab B: Upload File -->
+      <div id="audio-panel-upload" class="hidden bg-botanic-card border border-botanic-border rounded-3xl p-6 text-center space-y-3 shadow-xl">
+        <label class="cursor-pointer block border-2 border-dashed border-botanic-border hover:border-botanic-peach/60 rounded-2xl p-6 transition">
+          <input type="file" id="audio-file-input" accept="audio/*" class="hidden">
+          <div class="w-12 h-12 rounded-full bg-botanic-surface mx-auto flex items-center justify-center text-botanic-peach text-xl mb-2">
+            <i class="ph-bold ph-music-notes"></i>
+          </div>
+          <span class="text-xs font-semibold text-white block" id="upload-audio-name">Tap to select audio file from phone</span>
+          <span class="text-[10px] text-slate-400">MP3, M4A, WAV voice memos</span>
+        </label>
+      </div>
+
+      <!-- Smart Silence Trimmer Card -->
+      <div class="bg-botanic-card/60 border border-botanic-border rounded-2xl p-3.5 space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+              <i class="ph-bold ph-scissors"></i>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-white">Auto Dead-Air Trimmer</div>
+              <div class="text-[10px] text-slate-400">Skip pauses & breath valleys cleanly</div>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="silence-trimmer-enabled" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-botanic-surface border border-botanic-border rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-botanic-leaf"></div>
+          </label>
+        </div>
+        <div id="silence-detected-badge" class="text-[11px] font-mono text-botanic-sage pt-1 hidden">
+          0.0s pauses ready to be skipped
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- STEP 3: AESTHETIC VIBE DECK CAROUSEL & OPTIONAL HOOK -->
+    <!-- ================================================================= -->
+    <section id="step-3" class="wizard-step hidden space-y-4">
+      <div class="space-y-1">
+        <span class="text-xs font-semibold tracking-wider text-botanic-sage uppercase font-mono">03. The Vibe & Hook</span>
+        <h2 class="text-2xl font-bold font-serif text-white">Pick Your Aesthetic</h2>
+        <p class="text-xs text-slate-400">Choose a signature style for your video look, lighting, and motion.</p>
+      </div>
+
+      <!-- Live Mini-Preview 9:16 Canvas -->
+      <div class="relative w-44 h-72 mx-auto rounded-3xl overflow-hidden border-2 border-botanic-border shadow-2xl bg-black">
+        <canvas id="preview-canvas" width="540" height="960" class="w-full h-full object-cover block"></canvas>
+        
+        <!-- TikTok Safe Zone Overlays -->
+        <div id="preview-safe-zone" class="safe-zone-guide absolute inset-0 hidden">
+          <!-- Right side likes/comments icons placeholder -->
+          <div class="absolute right-2 bottom-16 flex flex-col items-center gap-2 opacity-60">
+            <div class="w-7 h-7 rounded-full bg-white/20 border border-white/50 flex items-center justify-center text-[10px]">❤️</div>
+            <div class="w-7 h-7 rounded-full bg-white/20 border border-white/50 flex items-center justify-center text-[10px]">💬</div>
+            <div class="w-7 h-7 rounded-full bg-white/20 border border-white/50 flex items-center justify-center text-[10px]">🔖</div>
+          </div>
+          <!-- Bottom native TikTok caption area -->
+          <div class="absolute bottom-2 left-2 right-12 h-10 bg-white/10 rounded-lg border border-white/20 flex items-center px-2">
+            <span class="text-[8px] font-mono text-white/60">TikTok Captions & Sound Bar</span>
+          </div>
+          <!-- Top Following / For You -->
+          <div class="absolute top-2 inset-x-0 text-center">
+            <span class="text-[8px] font-mono text-white/50">Safe Video Area</span>
+          </div>
+        </div>
+
+        <!-- Safe Zone Toggle Button -->
+        <button onclick="toggleSafeZone()" class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-botanic-dark/70 text-slate-300 hover:text-white flex items-center justify-center backdrop-blur text-xs">
+          <i class="ph-bold ph-bounding-box"></i>
+        </button>
+      </div>
+
+      <!-- Vibe Deck Carousel Cards (6 Curated Aesthetics) -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs text-slate-300 font-medium px-1">
+          <span>Choose Mood:</span>
+          <span id="active-vibe-name" class="text-botanic-peach font-serif italic text-sm">Golden Greenhouse</span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-2.5">
+          <!-- Vibe 1: Golden Greenhouse -->
+          <button onclick="selectVibe('golden')" class="vibe-card active p-3 rounded-2xl border text-left transition bg-botanic-surface border-botanic-peach shadow-md" data-vibe="golden">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">🌿</span>
+              <span class="text-[9px] font-mono uppercase bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">Sunlight</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Golden Greenhouse</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Warm bloom, dust motes & slow drift</div>
+          </button>
+
+          <!-- Vibe 2: Soft Glow / Angelic -->
+          <button onclick="selectVibe('softglow')" class="vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60" data-vibe="softglow">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">✨</span>
+              <span class="text-[9px] font-mono uppercase bg-pink-500/20 text-pink-300 px-1.5 py-0.5 rounded">Glow</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Soft Glow / Angelic</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Diffuse bloom & breathing zoom</div>
+          </button>
+
+          <!-- Vibe 3: Vintage 35mm Film -->
+          <button onclick="selectVibe('vintage')" class="vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60" data-vibe="vintage">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">🎞️</span>
+              <span class="text-[9px] font-mono uppercase bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">Analog</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Vintage 35mm Film</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Warm grain & retro date stamp</div>
+          </button>
+
+          <!-- Vibe 4: Moody Fern -->
+          <button onclick="selectVibe('moody')" class="vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60" data-vibe="moody">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">🍃</span>
+              <span class="text-[9px] font-mono uppercase bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">Deep</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Moody Fern</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Rich emerald greens & deep contrast</div>
+          </button>
+
+          <!-- Vibe 5: Peachy Sunset -->
+          <button onclick="selectVibe('peachy')" class="vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60" data-vibe="peachy">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">🍑</span>
+              <span class="text-[9px] font-mono uppercase bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">Warm</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Peachy Sunset</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Amber peach tones & soft panning</div>
+          </button>
+
+          <!-- Vibe 6: Baddie Pop -->
+          <button onclick="selectVibe('baddie')" class="vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60" data-vibe="baddie">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-base">💎</span>
+              <span class="text-[9px] font-mono uppercase bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">Punchy</span>
+            </div>
+            <div class="text-xs font-bold text-white font-serif">Baddie Pop</div>
+            <div class="text-[10px] text-slate-400 mt-0.5">High definition & audio pulse cuts</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Opening Hook Text Input (Optional) -->
+      <div class="bg-botanic-card border border-botanic-border rounded-2xl p-3.5 space-y-1.5">
+        <label class="text-xs font-semibold text-slate-200 block">Opening Hook Caption (Optional):</label>
+        <input type="text" id="hook-text-input" placeholder="e.g. watch till the end 🌿" value="my favorite corner of the world 🌿" class="w-full bg-botanic-dark border border-botanic-border rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-botanic-peach">
+        <p class="text-[10px] text-slate-400">Fllashes cleanly for the first 2.5s within the TikTok safe zone.</p>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- STEP 4: ONE-TAP VIDEO EXPORT & INSTANT PREVIEW -->
+    <!-- ================================================================= -->
+    <section id="step-4" class="wizard-step hidden space-y-4">
+      <div class="space-y-1 text-center">
+        <span class="text-xs font-semibold tracking-wider text-botanic-sage uppercase font-mono">04. Video Output</span>
+        <h2 class="text-2xl font-bold font-serif text-white">Your Video Is Ready!</h2>
+        <p class="text-xs text-slate-400">100% rendered locally on your phone. Zero servers, zero loss in quality.</p>
+      </div>
+
+      <!-- Render Output Video Player -->
+      <div class="relative w-48 h-80 mx-auto rounded-3xl overflow-hidden border-2 border-botanic-peach/60 shadow-2xl bg-black flex items-center justify-center">
+        <video id="final-video-player" class="w-full h-full object-cover hidden" playsinline controls loop></video>
+        <div id="render-placeholder" class="text-center p-4 space-y-2">
+          <div class="w-12 h-12 rounded-full bg-botanic-surface text-botanic-peach flex items-center justify-center mx-auto text-xl animate-bounce">
+            <i class="ph-bold ph-film-slate"></i>
+          </div>
+          <p class="text-xs font-medium text-slate-300">Tap the button below to assemble your video</p>
+        </div>
+      </div>
+
+      <!-- Render Progress Bar Container (Hidden until rendering starts) -->
+      <div id="render-progress-card" class="hidden bg-botanic-card border border-botanic-border rounded-2xl p-4 space-y-2">
+        <div class="flex items-center justify-between text-xs font-mono">
+          <span class="text-botanic-peach flex items-center gap-1.5">
+            <i class="ph-bold ph-sparkle animate-spin"></i>
+            <span>Blending Aesthetic Layers...</span>
+          </span>
+          <span id="render-pct" class="text-white font-bold">0%</span>
+        </div>
+        <div class="w-full h-2 bg-botanic-dark rounded-full overflow-hidden relative">
+          <div id="render-bar" class="h-full bg-gradient-to-r from-botanic-leaf via-botanic-sage to-botanic-peach w-0 transition-all duration-100"></div>
+        </div>
+        <p class="text-[10px] text-slate-400 text-center font-mono">Assembling 9:16 vertical stream with synced audio...</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-2.5 pt-2">
+        <button id="btn-start-render" onclick="renderFinalVideo()" class="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-botanic-sage to-botanic-peach text-botanic-dark font-serif font-bold text-base shadow-xl shadow-botanic-peach/10 active:scale-98 transition flex items-center justify-center gap-2">
+          <i class="ph-fill ph-magic-wand text-lg"></i>
+          <span>Make My Video ✨</span>
+        </button>
+
+        <a id="btn-download-video" class="hidden w-full py-3.5 rounded-2xl bg-botanic-surface hover:bg-botanic-card border border-botanic-peach/50 text-white font-medium text-sm transition flex items-center justify-center gap-2">
+          <i class="ph-bold ph-download-simple text-base text-botanic-peach"></i>
+          <span>Save Video to Phone (Camera Roll)</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- BOTTOM NAVIGATION BAR (BACK / NEXT WIZARD BUTTONS) -->
+    <div class="pt-6 border-t border-botanic-border/50 flex items-center justify-between gap-3 mt-4">
+      <button id="btn-wizard-prev" onclick="goToStep(currentStep - 1)" class="px-5 py-2.5 rounded-xl bg-botanic-card hover:bg-botanic-surface border border-botanic-border text-xs font-medium text-slate-300 transition flex items-center gap-1.5 opacity-0 pointer-events-none">
+        <i class="ph-bold ph-arrow-left"></i>
+        <span>Back</span>
+      </button>
+
+      <div class="flex items-center gap-1.5">
+        <span class="step-dot w-2 h-2 rounded-full bg-botanic-peach"></span>
+        <span class="step-dot w-2 h-2 rounded-full bg-botanic-border"></span>
+        <span class="step-dot w-2 h-2 rounded-full bg-botanic-border"></span>
+        <span class="step-dot w-2 h-2 rounded-full bg-botanic-border"></span>
+      </div>
+
+      <button id="btn-wizard-next" onclick="goToStep(currentStep + 1)" class="px-6 py-2.5 rounded-xl bg-botanic-peach text-botanic-dark hover:bg-pink-200 text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-botanic-peach/10">
+        <span>Next</span>
+        <i class="ph-bold ph-arrow-right"></i>
+      </button>
+    </div>
+
+  </main>
+
+  <!-- OFFLINE CANVAS WORKERS & APP ENGINE -->
+  <script>
+    /* =========================================================================
+       GLOBAL APP STATE
+       ========================================================================= */
+    let currentStep = 1;
+    let uploadedImages = []; // Array of Image objects
+    let userAudioBuffer = null;
+    let rawAudioBlob = null;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordStartTime = 0;
+    let recordTimerInterval = null;
+    let selectedVibe = 'golden';
+    let isSafeZoneVisible = false;
+    let previewLoopReq = null;
+    let audioContext = null;
+    let detectedSilences = []; // Audio valleys for smart trimmer
+
+    // Toast helper
+    function showToast(msg, icon = 'ph-sparkle') {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      const iconElem = document.getElementById('toast-icon');
+      text.innerText = msg;
+      iconElem.className = `ph-bold ${icon} text-sm`;
+      toast.classList.remove('hidden');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3200);
+    }
+
+    // Step Navigation
+    function goToStep(step) {
+      if (step < 1 || step > 4) return;
+      
+      // Step validation
+      if (step > 1 && uploadedImages.length === 0) {
+        showToast('Please add at least 1 photo first! 📸', 'ph-image');
+        return;
+      }
+
+      currentStep = step;
+      document.querySelectorAll('.wizard-step').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`step-${step}`).classList.remove('hidden');
+
+      // Update Tag & Indicators
+      document.getElementById('wizard-step-tag').innerText = `Step ${step} of 4`;
+      const dots = document.querySelectorAll('.step-dot');
+      dots.forEach((dot, idx) => {
+        dot.className = (idx + 1 === step) 
+          ? 'step-dot w-2 h-2 rounded-full bg-botanic-peach' 
+          : 'step-dot w-2 h-2 rounded-full bg-botanic-border';
+      });
+
+      // Back / Next buttons visibility
+      const btnPrev = document.getElementById('btn-wizard-prev');
+      const btnNext = document.getElementById('btn-wizard-next');
+
+      if (step === 1) {
+        btnPrev.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        btnPrev.classList.remove('opacity-0', 'pointer-events-none');
+      }
+
+      if (step === 4) {
+        btnNext.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        btnNext.classList.remove('opacity-0', 'pointer-events-none');
+      }
+
+      // Start preview loop if entering Step 3
+      if (step === 3) {
+        startPreviewCanvas();
+      } else {
+        stopPreviewCanvas();
+      }
+    }
+
+    /* =========================================================================
+       STEP 1: PHOTOS & SMART 9:16 VERTICAL AUTO-FIT
+       ========================================================================= */
+    const photoInput = document.getElementById('photo-input');
+    const thumbWrap = document.getElementById('thumb-preview-wrap');
+    const thumbStrip = document.getElementById('thumbnail-strip');
+    const photoCountLabel = document.getElementById('photo-count-label');
+
+    photoInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            uploadedImages.push(img);
+            refreshThumbnails();
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+      showToast('Photos loaded! Auto-fitting to 9:16...', 'ph-check');
+    });
+
+    function refreshThumbnails() {
+      thumbStrip.innerHTML = '';
+      if (uploadedImages.length > 0) {
+        thumbWrap.classList.remove('hidden');
+        photoCountLabel.innerText = `${uploadedImages.length} photo${uploadedImages.length > 1 ? 's' : ''} ready`;
+      } else {
+        thumbWrap.classList.add('hidden');
+      }
+
+      uploadedImages.forEach((img, idx) => {
+        const thumbDiv = document.createElement('div');
+        thumbDiv.className = 'relative flex-shrink-0 w-16 h-24 rounded-xl overflow-hidden border border-botanic-border bg-black group';
+
+        const thumbImg = document.createElement('img');
+        thumbImg.src = img.src;
+        thumbImg.className = 'w-full h-full object-cover';
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 text-white flex items-center justify-center text-[10px] hover:bg-rose-600 transition';
+        delBtn.innerHTML = '<i class="ph-bold ph-x"></i>';
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          uploadedImages.splice(idx, 1);
+          refreshThumbnails();
+        };
+
+        const indexBadge = document.createElement('span');
+        indexBadge.className = 'absolute bottom-1 left-1 bg-black/60 backdrop-blur text-[9px] font-mono px-1 rounded text-botanic-peach';
+        indexBadge.innerText = `#${idx + 1}`;
+
+        thumbDiv.appendChild(thumbImg);
+        thumbDiv.appendChild(delBtn);
+        thumbDiv.appendChild(indexBadge);
+        thumbStrip.appendChild(thumbDiv);
+      });
+    }
+
+    // Default cute aesthetic fallback sample loader
+    function loadSampleAestheticPhotos() {
+      uploadedImages = [];
+      const sampleGradients = [
+        ['#1e3a2b', '#4ade80', 'BOTANICAL OASIS 🌿'],
+        ['#3b1828', '#fbcfe8', 'ANGELIC GLOW ✨'],
+        ['#2c2013', '#fbbf24', 'GOLDEN HOUR ☀️'],
+        ['#191e24', '#a7f3d0', 'PEACEFUL FERN 🍃']
+      ];
+
+      sampleGradients.forEach(([c1, c2, title]) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1920;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        const grad = ctx.createLinearGradient(0, 0, 0, 1920);
+        grad.addColorStop(0, c1);
+        grad.addColorStop(1, '#0c120f');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1080, 1920);
+
+        // Gentle aesthetic circle
+        const radGrad = ctx.createRadialGradient(540, 960, 50, 540, 960, 500);
+        radGrad.addColorStop(0, c2);
+        radGrad.addColorStop(1, 'transparent');
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = radGrad;
+        ctx.beginPath();
+        ctx.arc(540, 960, 500, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+
+        // Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 54px "Playfair Display", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, 540, 960);
+
+        const img = new Image();
+        img.onload = () => {
+          uploadedImages.push(img);
+          refreshThumbnails();
+        };
+        img.src = canvas.toDataURL();
+      });
+
+      showToast('4 Aesthetic samples loaded!', 'ph-sparkle');
+    }
+
+    /* Helper: Smart Draw with Blurred Bokeh Wings if non-9:16 */
+    function drawAestheticFrame(ctx, img, cw, ch, scale = 1.0, transX = 0, transY = 0) {
+      if (!img) return;
+
+      const targetAspect = 9 / 16;
+      const imgAspect = img.width / img.height;
+
+      // If image is significantly different from 9:16, draw blurred background first
+      if (Math.abs(imgAspect - targetAspect) > 0.05) {
+        // Blurred backdrop
+        ctx.save();
+        ctx.filter = 'blur(28px) brightness(0.65)';
+        const bgScale = Math.max(cw / img.width, ch / img.height);
+        const bgW = img.width * bgScale;
+        const bgH = img.height * bgScale;
+        ctx.drawImage(img, (cw - bgW) / 2, (ch - bgH) / 2, bgW, bgH);
+        ctx.restore();
+
+        // Foreground crisp image fitted cleanly
+        const fitScale = Math.min(cw / img.width, ch / img.height) * scale;
+        const fitW = img.width * fitScale;
+        const fitH = img.height * fitScale;
+        const posX = ((cw - fitW) / 2) + transX;
+        const posY = ((ch - fitH) / 2) + transY;
+
+        ctx.drawImage(img, posX, posY, fitW, fitH);
+      } else {
+        // Direct fill cover
+        const coverScale = Math.max(cw / img.width, ch / img.height) * scale;
+        const coverW = img.width * coverScale;
+        const coverH = img.height * coverScale;
+        const posX = ((cw - coverW) / 2) + transX;
+        const posY = ((ch - coverH) / 2) + transY;
+        ctx.drawImage(img, posX, posY, coverW, coverH);
+      }
+    }
+
+    /* =========================================================================
+       STEP 2: AUDIO, WEBMIC & SMART DEAD-AIR SILENCE CUTTER
+       ========================================================================= */
+    const tabBtnRecord = document.getElementById('tab-btn-record');
+    const tabBtnUpload = document.getElementById('tab-btn-upload');
+    const panelRecord = document.getElementById('audio-panel-record');
+    const panelUpload = document.getElementById('audio-panel-upload');
+    const btnToggleRecord = document.getElementById('btn-toggle-record');
+    const micIcon = document.getElementById('mic-icon');
+    const micPulseRing = document.getElementById('mic-pulse-ring');
+    const recordTimerDisplay = document.getElementById('record-timer-display');
+    const recordInstructions = document.getElementById('record-instructions');
+    const liveMicCanvas = document.getElementById('live-mic-canvas');
+    const liveMicCtx = liveMicCanvas.getContext('2d');
+    const audioFileInput = document.getElementById('audio-file-input');
+    const uploadAudioName = document.getElementById('upload-audio-name');
+    const silenceBadge = document.getElementById('silence-detected-badge');
+    const silenceToggle = document.getElementById('silence-trimmer-enabled');
+
+    let micStream = null;
+    let micAnalyser = null;
+    let micAnimId = null;
+
+    function switchAudioSource(mode) {
+      if (mode === 'record') {
+        panelRecord.classList.remove('hidden');
+        panelUpload.classList.add('hidden');
+        tabBtnRecord.className = 'py-2 rounded-xl text-xs font-semibold bg-botanic-surface text-botanic-peach border border-botanic-border shadow-sm flex items-center justify-center gap-1.5 transition';
+        tabBtnUpload.className = 'py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition';
+      } else {
+        panelRecord.classList.add('hidden');
+        panelUpload.classList.remove('hidden');
+        tabBtnUpload.className = 'py-2 rounded-xl text-xs font-semibold bg-botanic-surface text-botanic-peach border border-botanic-border shadow-sm flex items-center justify-center gap-1.5 transition';
+        tabBtnRecord.className = 'py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-1.5 transition';
+      }
+    }
+
+    btnToggleRecord.addEventListener('click', async () => {
+      if (!isRecording) {
+        // Start recording
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          startLiveWaveform(micStream);
+
+          audioChunks = [];
+          mediaRecorder = new MediaRecorder(micStream);
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = async () => {
+            rawAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            await decodeAudioBlob(rawAudioBlob);
+            showToast('Voiceover saved & normalized! 🎙️', 'ph-check');
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          recordStartTime = performance.now();
+          micIcon.className = 'ph-fill ph-stop';
+          micPulseRing.classList.remove('hidden');
+          micPulseRing.classList.add('animate-ping');
+          recordInstructions.innerText = 'Recording... Tap to stop';
+
+          recordTimerInterval = setInterval(() => {
+            const elapsed = Math.floor((performance.now() - recordStartTime) / 1000);
+            const m = Math.floor(elapsed / 60);
+            const s = elapsed % 60;
+            recordTimerDisplay.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+          }, 500);
+
+        } catch (err) {
+          console.error(err);
+          showToast('Mic permission required to record.', 'ph-warning');
+        }
+      } else {
+        // Stop recording
+        isRecording = false;
+        clearInterval(recordTimerInterval);
+        mediaRecorder.stop();
+        if (micStream) micStream.getTracks().forEach(t => t.stop());
+        cancelAnimationFrame(micAnimId);
+        micIcon.className = 'ph-fill ph-microphone';
+        micPulseRing.classList.add('hidden');
+        micPulseRing.classList.remove('animate-ping');
+        recordInstructions.innerText = 'Voiceover captured! Tap to re-record';
+      }
+    });
+
+    audioFileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      uploadAudioName.innerText = `Selected: ${file.name}`;
+      await decodeAudioBlob(file);
+      showToast('Audio file loaded! 🎵', 'ph-check');
+    });
+
+    async function decodeAudioBlob(blob) {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const arrayBuffer = await blob.arrayBuffer();
+      userAudioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      detectDeadAirSilence();
+    }
+
+    function startLiveWaveform(stream) {
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createMediaStreamSource(stream);
+      micAnalyser = audioContext.createAnalyser();
+      micAnalyser.fftSize = 64;
+      source.connect(micAnalyser);
+
+      const bufferLength = micAnalyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        micAnimId = requestAnimationFrame(draw);
+        micAnalyser.getByteFrequencyData(dataArray);
+
+        const w = liveMicCanvas.width = liveMicCanvas.clientWidth;
+        const h = liveMicCanvas.height = liveMicCanvas.clientHeight;
+        liveMicCtx.clearRect(0, 0, w, h);
+
+        const barWidth = (w / bufferLength) * 1.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * h;
+          liveMicCtx.fillStyle = '#fbcfe8';
+          liveMicCtx.fillRect(x, h - barHeight, barWidth - 1, barHeight);
+          x += barWidth;
+        }
+      }
+      draw();
+    }
+
+    // Automatically detect silence pauses in voiceover
+    function detectDeadAirSilence() {
+      if (!userAudioBuffer) return;
+      const channelData = userAudioBuffer.getChannelData(0);
+      const sampleRate = userAudioBuffer.sampleRate;
+      const threshold = 0.025; // RMS threshold
+      const winSize = Math.floor(sampleRate * 0.05); // 50ms windows
+      const totalWindows = Math.floor(channelData.length / winSize);
+
+      let inSilence = false;
+      let silenceStart = 0;
+      detectedSilences = [];
+
+      for (let w = 0; w < totalWindows; w++) {
+        let sumSq = 0;
+        for (let i = 0; i < winSize; i++) {
+          const s = channelData[w * winSize + i];
+          sumSq += s * s;
+        }
+        const rms = Math.sqrt(sumSq / winSize);
+        const curTime = (w * winSize) / sampleRate;
+
+        if (rms < threshold) {
+          if (!inSilence) {
+            inSilence = true;
+            silenceStart = curTime;
+          }
+        } else {
+          if (inSilence) {
+            inSilence = false;
+            const dur = curTime - silenceStart;
+            if (dur > 0.4) { // Only cut long pauses > 400ms
+              detectedSilences.push({ start: silenceStart + 0.05, end: curTime - 0.05 });
+            }
+          }
+        }
+      }
+
+      let totalSaved = 0;
+      detectedSilences.forEach(s => totalSaved += (s.end - s.start));
+      if (detectedSilences.length > 0) {
+        silenceBadge.innerText = `✨ ${detectedSilences.length} awkward pause${detectedSilences.length > 1 ? 's' : ''} (${totalSaved.toFixed(1)}s dead-air) auto-trimmed`;
+        silenceBadge.classList.remove('hidden');
+      }
+    }
+
+    /* =========================================================================
+       STEP 3: AESTHETIC VIBE DECK CAROUSEL & PREVIEW RENDERER
+       ========================================================================= */
+    const previewCanvas = document.getElementById('preview-canvas');
+    const prevCtx = previewCanvas.getContext('2d');
+    const activeVibeName = document.getElementById('active-vibe-name');
+    const hookTextInput = document.getElementById('hook-text-input');
+    const previewSafeZone = document.getElementById('preview-safe-zone');
+
+    const VIBE_METADATA = {
+      golden: { name: 'Golden Greenhouse', desc: 'Warm bloom, dust motes & slow drift' },
+      softglow: { name: 'Soft Glow / Angelic', desc: 'Diffuse bloom & breathing zoom' },
+      vintage: { name: 'Vintage 35mm Film', desc: 'Warm grain & retro date stamp' },
+      moody: { name: 'Moody Fern', desc: 'Rich emerald greens & deep contrast' },
+      peachy: { name: 'Peachy Sunset', desc: 'Amber peach tones & soft panning' },
+      baddie: { name: 'Baddie Pop', desc: 'High definition & audio pulse cuts' }
+    };
+
+    function selectVibe(vibeKey) {
+      selectedVibe = vibeKey;
+      document.querySelectorAll('.vibe-card').forEach(card => {
+        if (card.dataset.vibe === vibeKey) {
+          card.className = 'vibe-card active p-3 rounded-2xl border text-left transition bg-botanic-surface border-botanic-peach shadow-md';
+        } else {
+          card.className = 'vibe-card p-3 rounded-2xl border text-left transition bg-botanic-card border-botanic-border hover:border-botanic-sage/60';
+        }
+      });
+      activeVibeName.innerText = VIBE_METADATA[vibeKey].name;
+    }
+
+    function toggleSafeZone() {
+      isSafeZoneVisible = !isSafeZoneVisible;
+      if (isSafeZoneVisible) {
+        previewSafeZone.classList.remove('hidden');
+        showToast('TikTok UI Safe Zones: ON', 'ph-bounding-box');
+      } else {
+        previewSafeZone.classList.add('hidden');
+      }
+    }
+
+    // Interactive Real-Time Preview Loop
+    function startPreviewCanvas() {
+      if (previewLoopReq) cancelAnimationFrame(previewLoopReq);
+      const startTime = performance.now();
+
+      function loop(now) {
+        const elapsed = (now - startTime) / 1000;
+        renderCanvasFrame(prevCtx, 540, 960, elapsed, 6.0, selectedVibe, hookTextInput.value);
+        previewLoopReq = requestAnimationFrame(loop);
+      }
+      previewLoopReq = requestAnimationFrame(loop);
+    }
+
+    function stopPreviewCanvas() {
+      if (previewLoopReq) cancelAnimationFrame(previewLoopReq);
+    }
+
+    /* Core Universal Frame Renderer (Used for both Live Preview and Final Video Export) */
+    function renderCanvasFrame(ctx, cw, ch, timeSec, totalDuration, vibe, hookText) {
+      ctx.clearRect(0, 0, cw, ch);
+
+      // Determine active photo index from slide cycling
+      const photoCount = uploadedImages.length || 1;
+      const slideDuration = totalDuration / photoCount;
+      const activeIdx = Math.min(photoCount - 1, Math.floor(timeSec / slideDuration));
+      const activeImg = uploadedImages[activeIdx];
+      const slideLocalTime = timeSec % slideDuration;
+      const progress = slideLocalTime / slideDuration;
+
+      // Camera motion calculations per Vibe
+      let scale = 1.0;
+      let transX = 0;
+      let transY = 0;
+
+      switch (vibe) {
+        case 'golden':
+          // Slow upward drift
+          scale = 1.0 + (progress * 0.08);
+          transY = progress * -20;
+          break;
+        case 'softglow':
+          // Breathing gentle pulse
+          scale = 1.0 + Math.sin(timeSec * 2.5) * 0.04;
+          break;
+        case 'vintage':
+          // Steady with tactile slide cuts
+          scale = 1.02;
+          break;
+        case 'moody':
+          // Smooth diagonal push
+          scale = 1.0 + (progress * 0.12);
+          transX = progress * 15;
+          transY = progress * -15;
+          break;
+        case 'peachy':
+          // Horizontal subtle pan
+          scale = 1.06;
+          transX = Math.sin(timeSec * 1.2) * 18;
+          break;
+        case 'baddie':
+          // Punchy micro-snap
+          scale = (slideLocalTime < 0.25) ? 1.08 : (1.0 + (progress * 0.03));
+          break;
+      }
+
+      // Draw photo with smart blurred 9:16 auto-fit
+      drawAestheticFrame(ctx, activeImg, cw, ch, scale, transX, transY);
+
+      // Apply Aesthetic Color Grading / Tone Layers
+      ctx.save();
+      if (vibe === 'golden') {
+        // Warm golden sunlight wash
+        const goldGrad = ctx.createLinearGradient(0, 0, cw, ch);
+        goldGrad.addColorStop(0, 'rgba(251, 191, 36, 0.16)');
+        goldGrad.addColorStop(1, 'rgba(245, 158, 11, 0.08)');
+        ctx.fillStyle = goldGrad;
+        ctx.fillRect(0, 0, cw, ch);
+
+        // Floating sun motes / dust sparks
+        ctx.fillStyle = 'rgba(254, 243, 199, 0.55)';
+        for (let i = 0; i < 12; i++) {
+          const seedX = (Math.sin(i * 99 + timeSec * 0.8) * 0.5 + 0.5) * cw;
+          const seedY = (Math.cos(i * 33 + timeSec * 0.4) * 0.5 + 0.5) * ch;
+          ctx.beginPath();
+          ctx.arc(seedX, seedY, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } 
+      else if (vibe === 'softglow') {
+        // Dreamy diffused pinkish bloom
+        const glowGrad = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.1, cw / 2, ch / 2, ch * 0.6);
+        glowGrad.addColorStop(0, 'rgba(251, 207, 232, 0.14)');
+        glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0.25)');
+        ctx.fillStyle = glowGrad;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      else if (vibe === 'vintage') {
+        // 35mm warm tone wash & retro date-stamp in corner
+        ctx.fillStyle = 'rgba(180, 83, 9, 0.08)';
+        ctx.fillRect(0, 0, cw, ch);
+
+        // Date stamp
+        ctx.font = '700 18px "JetBrains Mono", monospace';
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.85)';
+        ctx.textAlign = 'right';
+        ctx.fillText("'26  10  14", cw - 28, ch - 60);
+      }
+      else if (vibe === 'moody') {
+        // Deep emerald botanic tint + soft vignette
+        const darkVignette = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.2, cw / 2, ch / 2, ch * 0.8);
+        darkVignette.addColorStop(0, 'rgba(6, 78, 59, 0.06)');
+        darkVignette.addColorStop(1, 'rgba(10, 15, 12, 0.65)');
+        ctx.fillStyle = darkVignette;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      else if (vibe === 'peachy') {
+        // Warm peachy sunset glow
+        const peachGrad = ctx.createLinearGradient(0, 0, 0, ch);
+        peachGrad.addColorStop(0, 'rgba(251, 146, 60, 0.15)');
+        peachGrad.addColorStop(1, 'rgba(244, 63, 94, 0.12)');
+        ctx.fillStyle = peachGrad;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      else if (vibe === 'baddie') {
+        // Punchy contrast edges
+        const popGrad = ctx.createRadialGradient(cw / 2, ch / 2, ch * 0.3, cw / 2, ch / 2, ch * 0.75);
+        popGrad.addColorStop(0, 'transparent');
+        popGrad.addColorStop(1, 'rgba(0, 0, 0, 0.45)');
+        ctx.fillStyle = popGrad;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+      ctx.restore();
+
+      // Opening Hook Text Overlay (Safe zone centered, 0s to 2.5s)
+      if (hookText && hookText.trim().length > 0 && timeSec < 2.5) {
+        ctx.save();
+        const hookAlpha = (timeSec < 2.0) ? 1.0 : Math.max(0, 1.0 - ((timeSec - 2.0) / 0.5));
+        ctx.globalAlpha = hookAlpha;
+
+        const textY = ch * 0.35; // Centered high above TikTok bottom UI
+        ctx.font = 'italic 700 32px "Playfair Display", serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        const metrics = ctx.measureText(hookText);
+        const boxW = metrics.width + 48;
+        const boxH = 54;
+
+        // Frosted aesthetic pill box
+        ctx.fillStyle = 'rgba(15, 23, 20, 0.75)';
+        ctx.beginPath();
+        ctx.roundRect((cw - boxW) / 2, textY - (boxH / 2), boxW, boxH, 27);
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(251, 207, 232, 0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(hookText, cw / 2, textY);
+        ctx.restore();
+      }
+    }
+
+    /* =========================================================================
+       STEP 4: VIDEO COMPILATION & MEDIARECORDER EXPORT
+       ========================================================================= */
+    const renderCard = document.getElementById('render-progress-card');
+    const renderBar = document.getElementById('render-bar');
+    const renderPct = document.getElementById('render-pct');
+    const finalVideoPlayer = document.getElementById('final-video-player');
+    const renderPlaceholder = document.getElementById('render-placeholder');
+    const btnStartRender = document.getElementById('btn-start-render');
+    const btnDownloadVideo = document.getElementById('btn-download-video');
+
+    async function renderFinalVideo() {
+      if (uploadedImages.length === 0) {
+        showToast('Please upload photos first.', 'ph-warning');
+        return;
+      }
+
+      btnStartRender.classList.add('opacity-50', 'pointer-events-none');
+      renderCard.classList.remove('hidden');
+      renderBar.style.width = '0%';
+      renderPct.innerText = '0%';
+      showToast('Compiling 9:16 video on device...', 'ph-magic-wand');
+
+      // Create an offscreen export canvas
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = 720;
+      exportCanvas.height = 1280;
+      const exportCtx = exportCanvas.getContext('2d');
+
+      // Calculate total video duration from audio or photos
+      let totalDuration = 6.0; // default 6s if no audio
+      if (userAudioBuffer) {
+        totalDuration = userAudioBuffer.duration;
+        // Adjust for trimmed silence
+        if (silenceToggle.checked && detectedSilences.length > 0) {
+          let trimmedAway = 0;
+          detectedSilences.forEach(s => trimmedAway += (s.end - s.start));
+          totalDuration = Math.max(2.0, totalDuration - trimmedAway);
+        }
+      }
+
+      // Prepare media stream and audio mixing
+      const fps = 30;
+      const canvasStream = exportCanvas.captureStream(fps);
+
+      // Setup audio track if present
+      if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const dest = audioContext.createMediaStreamDestination();
+
+      if (userAudioBuffer) {
+        const audioSrc = audioContext.createBufferSource();
+        audioSrc.buffer = userAudioBuffer;
+        
+        // Gentle compressor for volume leveling
+        const compressor = audioContext.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-24, audioContext.currentTime);
+        compressor.knee.setValueAtTime(30, audioContext.currentTime);
+        compressor.ratio.setValueAtTime(12, audioContext.currentTime);
+        compressor.attack.setValueAtTime(0.003, audioContext.currentTime);
+        compressor.release.setValueAtTime(0.25, audioContext.currentTime);
+
+        audioSrc.connect(compressor);
+        compressor.connect(dest);
+        compressor.connect(audioContext.destination);
+        audioSrc.start();
+      }
+
+      // Combine video and audio tracks
+      const combinedTracks = [
+        ...canvasStream.getVideoTracks(),
+        ...dest.stream.getAudioTracks()
+      ];
+      const combinedStream = new MediaStream(combinedTracks);
+
+      let mimeType = 'video/webm;codecs=vp9,opus';
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = 'video/webm';
+      }
+
+      const recorder = new MediaRecorder(combinedStream, {
+        mimeType: mimeType,
+        videoBitsPerSecond: 6000000
+      });
+
+      const recordedChunks = [];
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
+        const videoUrl = URL.createObjectURL(videoBlob);
+
+        finalVideoPlayer.src = videoUrl;
+        finalVideoPlayer.classList.remove('hidden');
+        renderPlaceholder.classList.add('hidden');
+        renderCard.classList.add('hidden');
+        btnStartRender.classList.remove('opacity-50', 'pointer-events-none');
+
+        btnDownloadVideo.href = videoUrl;
+        btnDownloadVideo.download = `AuraPulse-${selectedVibe}-${Date.now()}.webm`;
+        btnDownloadVideo.classList.remove('hidden');
+
+        showToast('Video ready! Download to your phone ✨', 'ph-sparkle');
+        finalVideoPlayer.play();
+      };
+
+      recorder.start();
+
+      // Render loop
+      const totalMs = totalDuration * 1000;
+      const startTime = performance.now();
+
+      function stepRender(now) {
+        const elapsedMs = now - startTime;
+        const progress = Math.min(1.0, elapsedMs / totalMs);
+        const curSec = (progress * totalDuration);
+
+        // Draw frame
+        renderCanvasFrame(exportCtx, 720, 1280, curSec, totalDuration, selectedVibe, hookTextInput.value);
+
+        // Update progress bar
+        const pct = Math.floor(progress * 100);
+        renderBar.style.width = `${pct}%`;
+        renderPct.innerText = `${pct}%`;
+
+        if (progress < 1.0) {
+          requestAnimationFrame(stepRender);
+        } else {
+          recorder.stop();
+        }
+      }
+
+      requestAnimationFrame(stepRender);
+    }
+
+    /* Start fresh reset */
+    function resetAll() {
+      uploadedImages = [];
+      userAudioBuffer = null;
+      rawAudioBlob = null;
+      refreshThumbnails();
+      recordTimerDisplay.innerText = '00:00';
+      uploadAudioName.innerText = 'Tap to select audio file from phone';
+      silenceBadge.classList.add('hidden');
+      finalVideoPlayer.classList.add('hidden');
+      renderPlaceholder.classList.remove('hidden');
+      btnDownloadVideo.classList.add('hidden');
+      goToStep(1);
+      showToast('Reset complete! Starting fresh 🌿', 'ph-plant');
+    }
+
+    // Auto-init on launch
+    window.onload = function() {
+      showToast('Welcome to AuraPulse Studio 🌿', 'ph-plant');
+    };
+  </script>
+</body>
+</html>
+```
